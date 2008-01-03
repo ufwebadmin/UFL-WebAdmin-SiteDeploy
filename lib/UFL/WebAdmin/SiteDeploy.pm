@@ -1,107 +1,44 @@
 package UFL::WebAdmin::SiteDeploy;
 
-use warnings;
 use strict;
-
-=head1 NAME
-
-UFL::WebAdmin::SiteDeploy - The great new UFL::WebAdmin::SiteDeploy!
-
-=head1 VERSION
-
-Version 0.01
-
-=cut
+use warnings;
 
 our $VERSION = '0.01';
 
+=head1 NAME
+
+UFL::WebAdmin::SiteDeploy - Automatic Web site deployment
+
+=cut
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+    svn checkout https://svn.webadmin.ufl.edu/websites/www.ufl.edu/trunk/ www.ufl.edu
+    emacs index.html
+    svn commit -m "Some cool change"
 
-Perhaps a little code snippet.
+=head1 DESCRIPTION
 
-    use UFL::WebAdmin::SiteDeploy;
+This is a set of scripts designed to ease deployment of static Web
+sites managed by Web Administration at the University of Florida.
 
-    my $foo = UFL::WebAdmin::SiteDeploy->new();
-    ...
+Based on a small amount of configuration, content is deployed via
+C<rsync(1)> to one or more sites. For example, when a change is
+committed to the C<www.ufl.edu> repository, that change is
+automatically sent to L<http://test.www.ufl.edu/>.
 
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
-
-=head1 FUNCTIONS
-
-=head2 function1
-
-=cut
-
-sub function1 {
-}
-
-=head2 function2
-
-=cut
-
-sub function2 {
-}
+This saves each committer time and effort in figuring out what files
+need to be uploaded.
 
 =head1 AUTHOR
 
-Daniel Westermann-Clark, C<< <dwc at ufl.edu> >>
+Daniel Westermann-Clark E<lt>dwc@ufl.eduE<gt>
 
-=head1 BUGS
+=head1 LICENSE
 
-Please report any bugs or feature requests to C<bug-ufl-webadmin-sitedeploy at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=UFL-WebAdmin-SiteDeploy>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
-
-
-
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc UFL::WebAdmin::SiteDeploy
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=UFL-WebAdmin-SiteDeploy>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/UFL-WebAdmin-SiteDeploy>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/UFL-WebAdmin-SiteDeploy>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/UFL-WebAdmin-SiteDeploy>
-
-=back
-
-
-=head1 ACKNOWLEDGEMENTS
-
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008 Daniel Westermann-Clark, all rights reserved.
-
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
+This program is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
 
 =cut
 
-1; # End of UFL::WebAdmin::SiteDeploy
+1;
