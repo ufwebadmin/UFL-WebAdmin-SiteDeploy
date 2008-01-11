@@ -6,6 +6,9 @@ all_from 'lib/UFL/WebAdmin/SiteDeploy.pm';
 requires 'SVN::Notify';
 requires 'SVN::Notify::Mirror::Rsync';
 
+# For script/*.sh
+requires_external_bin 'bash';
+
 # All for SVN::Notify::Mirror::Rsync::AutoCreateCheckout
 requires_external_bin 'svn';
 requires_external_bin 'svnlook';
