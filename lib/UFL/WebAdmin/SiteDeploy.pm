@@ -9,8 +9,6 @@ our $VERSION = '0.01';
 
 UFL::WebAdmin::SiteDeploy - Automatic Web site deployment
 
-=cut
-
 =head1 SYNOPSIS
 
     svn checkout https://svn.webadmin.ufl.edu/websites/www.ufl.edu/trunk/ www.ufl.edu
