@@ -39,7 +39,7 @@ ok(! -d $checkout_dir, 'checkout directory does not exist');
 ok($notifier->prepare, 'prepared AutoCreateCheckout');
 
 SKIP: {
-    skip "set TEST_AUTHOR and set TEST_RSYNC_HOSTNAME to something known in .ssh/known_hosts", 4
+    skip "set TEST_AUTHOR and set TEST_RSYNC_HOSTNAME to something corresponding to localhost that is listed in .ssh/known_hosts", 4
         unless $ENV{TEST_AUTHOR};
 
     # Close and the reopen STDOUT to avoid confusion in Test::Harness with the svn output
