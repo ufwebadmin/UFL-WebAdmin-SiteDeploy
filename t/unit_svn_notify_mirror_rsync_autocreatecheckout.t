@@ -80,8 +80,8 @@ sub run_tests {
     $notifier->execute;
     open STDOUT, '>-' or die "Could not reopen STDOUT: $!";
 
-    ok(-d $checkout_dir, 'checkout directory created');
-    ok(-d $rsync_dir, 'rsync directory created');
+    ok(-d $checkout_dir, 'checkout directory exists');
+    ok(-d $rsync_dir, 'rsync directory exists');
 
     for my $file (@$files) {
         ok(-f File::Spec->join($checkout_dir, $file), "checkout directory contains checkout file $file");
