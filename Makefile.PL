@@ -3,8 +3,9 @@ use inc::Module::Install;
 name     'UFL-WebAdmin-SiteDeploy';
 all_from 'lib/UFL/WebAdmin/SiteDeploy.pm';
 
+requires 'Class::Accessor::Fast';
 requires 'SVN::Client';
-requires 'SVN::Notify';
+requires 'SVN::Notify::Config';
 requires 'SVN::Notify::Mirror::Rsync';
 
 # For script/*.sh
