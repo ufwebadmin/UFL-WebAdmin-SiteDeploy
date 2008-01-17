@@ -1,0 +1,85 @@
+id: 1.1.r2/0
+type: file
+pred: 1.0.r1/38
+count: 1
+text: 1 0 25 13 3b59af1fb198c1c2c68dbfba633daaa5
+cpath: /trunk/test.txt
+copyfrom: 1 /test.txt
+
+PLAIN
+K 8
+test.txt
+V 13
+file 1.1.r2/0
+END
+ENDREP
+id: 5.0.r2/193
+type: dir
+count: 0
+text: 2 144 36 36 65098a6a75f42b054dda3cc7e91ab5a1
+cpath: /trunk
+copyroot: 0 /
+
+id: 3.0.r2/307
+type: dir
+count: 0
+cpath: /branches/test
+copyroot: 0 /
+
+PLAIN
+K 4
+test
+V 14
+dir 3.0.r2/307
+END
+ENDREP
+id: 2.0.r2/424
+type: dir
+count: 0
+text: 2 378 33 33 995f361ec6193367ff62e6c86b0c056f
+cpath: /branches
+copyroot: 0 /
+
+id: 4.0.r2/541
+type: dir
+count: 0
+cpath: /tags
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 14
+dir 2.0.r2/424
+K 4
+tags
+V 14
+dir 4.0.r2/541
+K 5
+trunk
+V 14
+dir 5.0.r2/193
+END
+ENDREP
+id: 0.0.r2/712
+type: dir
+pred: 0.0.r1/203
+count: 2
+text: 2 603 96 96 4261a4b44ce407db48000aaa13328c85
+cpath: /
+copyroot: 0 /
+
+1._0.t1-1 add false false /trunk/test.txt
+1 /test.txt
+_3.0.t1-1 add false false /trunk
+
+_1.0.t1-1 add false false /branches/test
+
+_0.0.t1-1 add false false /branches
+
+1.0.r1/38 delete false false /test.txt
+
+_2.0.t1-1 add false false /tags
+
+
+712 838

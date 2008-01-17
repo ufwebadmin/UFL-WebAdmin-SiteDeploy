@@ -1,0 +1,13 @@
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-01-17T01:09:07.648917Z
+K 7
+svn:log
+V 55
+Rename file to make it easier to distinguish from trunk
+END

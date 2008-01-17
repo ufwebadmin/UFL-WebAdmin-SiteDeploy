@@ -3,6 +3,7 @@ use inc::Module::Install;
 name     'UFL-WebAdmin-SiteDeploy';
 all_from 'lib/UFL/WebAdmin/SiteDeploy.pm';
 
+requires 'SVN::Client';
 requires 'SVN::Notify';
 requires 'SVN::Notify::Mirror::Rsync';
 
@@ -14,6 +15,7 @@ requires_external_bin 'svn';
 requires_external_bin 'svnlook';
 requires_external_bin 'ssh';
 
+build_requires 'Cwd';
 build_requires 'File::Path';
 build_requires 'File::Spec';
 build_requires 'FindBin';

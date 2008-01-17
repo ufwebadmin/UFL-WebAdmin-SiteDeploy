@@ -3,6 +3,7 @@ package SVN::Notify::Mirror::Rsync::AutoCreateCheckout;
 use strict;
 use warnings;
 use base qw/SVN::Notify::Mirror::Rsync/;
+use SVN::Client;
 
 __PACKAGE__->register_attributes(
     'repos_uri' => 'repos-uri:s',
@@ -41,11 +42,49 @@ sub _cd_run {
 
     die 'You must specify the repository URI' unless $self->repos_uri;
 
-    unless (-d $path) {
-        system($self->svn_binary, 'checkout', $self->repos_uri, $path);
+    if (-d $path) {
+        # Check if we need to do a switch
+        $self->_maybe_switch_checkout($path);
+    }
+    else {
+        # Run the checkout
+        $self->_checkout_repo($path);
     }
 
     $self->SUPER::_cd_run(@_);
+}
+
+=head2 _maybe_switch_checkout
+
+Check the specified working copy against the configured repository
+URL. If they don't match, switch the working copy to the configured
+repository URL.
+
+=cut
+
+sub _maybe_switch_checkout {
+    my ($self, $path) = @_;
+
+    my $ctx = SVN::Client->new;
+
+    my $uri;
+    $ctx->info($path, undef, 'WORKING', sub { $uri = $_[1]->URL }, 0);
+
+    if ($self->repos_uri ne $uri) {
+        $ctx->switch($path, $self->repos_uri, $self->revision, 1);
+    }
+}
+
+=head2 _checkout_repo
+
+Checkout the configured repository to the specified path.
+
+=cut
+
+sub _checkout_repo {
+    my ($self, $path) = @_;
+
+    system($self->svn_binary, 'checkout', $self->repos_uri, $path);
 }
 
 =head1 AUTHOR
