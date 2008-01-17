@@ -6,10 +6,14 @@ use Cwd ();
 use File::Path ();
 use File::Spec;
 use FindBin;
-use Test::More tests => 21;
+use Test::More;
 
 BEGIN {
-      use_ok('SVN::Notify::Mirror::Rsync::AutoCreateCheckout');
+    plan skip_all => "set TEST_AUTHOR and set TEST_RSYNC_HOSTNAME to something corresponding to localhost that is listed in .ssh/known_hosts"
+        unless $ENV{TEST_AUTHOR};
+    plan tests => 21;
+
+    use_ok('SVN::Notify::Mirror::Rsync::AutoCreateCheckout');
 }
 
 my $REPO_DIR     = File::Spec->join($FindBin::Bin, 'data', 'repo');
@@ -71,22 +75,17 @@ sub run_tests {
 
     ok($notifier->prepare, 'prepared AutoCreateCheckout');
 
-    SKIP: {
-        skip "set TEST_AUTHOR and set TEST_RSYNC_HOSTNAME to something corresponding to localhost that is listed in .ssh/known_hosts", 4
-            unless $ENV{TEST_AUTHOR};
+    # Close and the reopen STDOUT to avoid confusion in Test::Harness with the svn output
+    close STDOUT or die "Could not close STDOUT: $!";
+    $notifier->execute;
+    open STDOUT, '>-' or die "Could not reopen STDOUT: $!";
 
-        # Close and the reopen STDOUT to avoid confusion in Test::Harness with the svn output
-        close STDOUT or die "Could not close STDOUT: $!";
-        $notifier->execute;
-        open STDOUT, '>-' or die "Could not reopen STDOUT: $!";
+    ok(-d $checkout_dir, 'checkout directory created');
+    ok(-d $rsync_dir, 'rsync directory created');
 
-        ok(-d $checkout_dir, 'checkout directory created');
-        ok(-d $rsync_dir, 'rsync directory created');
-
-        for my $file (@$files) {
-            ok(-f File::Spec->join($checkout_dir, $file), "checkout directory contains checkout file $file");
-            ok(-f File::Spec->join($rsync_dir, $file), "rsync directory contains checkout file $file");
-        }
+    for my $file (@$files) {
+        ok(-f File::Spec->join($checkout_dir, $file), "checkout directory contains checkout file $file");
+        ok(-f File::Spec->join($rsync_dir, $file), "rsync directory contains checkout file $file");
     }
 
     # Return to previous working directory (SVN::Notify::Mirror
