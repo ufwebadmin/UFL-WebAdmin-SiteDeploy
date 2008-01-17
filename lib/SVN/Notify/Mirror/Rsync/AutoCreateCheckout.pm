@@ -78,6 +78,14 @@ Check the specified working copy against the configured repository
 URL. If they don't match, switch the working copy to the configured
 repository URL.
 
+This is helpful, for example, when switching a site from trunk to a
+branch.
+
+NOTE: The case of tags is still not ideal due to the way that
+L<SVN::Notify::Mirror/execute> handles switching. It is recommended
+that the first tag be created and then any mirrored path be configured
+with a C<repos_uri> of that tag.
+
 =cut
 
 sub _maybe_switch_checkout {
