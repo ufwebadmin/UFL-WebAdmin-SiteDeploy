@@ -5,6 +5,7 @@ all_from 'lib/UFL/WebAdmin/SiteDeploy.pm';
 
 requires 'Class::Accessor::Fast';
 requires 'SVN::Client';
+requires 'SVN::Notify';
 requires 'SVN::Notify::Config';
 requires 'SVN::Notify::Mirror::Rsync';
 
