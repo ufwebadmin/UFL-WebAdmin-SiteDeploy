@@ -4,12 +4,13 @@ use strict;
 use warnings;
 use base qw/SVN::Notify::Mirror::Rsync/;
 use SVN::Client;
+use UFL::WebAdmin::SiteDeploy;
 
 __PACKAGE__->register_attributes(
     'repos_uri' => 'repos-uri:s',
 );
 
-our $VERSION = '0.01';
+our $VERSION = $UFL::WebAdmin::SiteDeploy::VERSION;
 
 =head1 NAME
 
