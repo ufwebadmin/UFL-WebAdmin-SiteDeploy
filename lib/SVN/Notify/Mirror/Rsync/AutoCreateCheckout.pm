@@ -2,13 +2,15 @@ package SVN::Notify::Mirror::Rsync::AutoCreateCheckout;
 
 use strict;
 use warnings;
-use base qw/SVN::Notify::Mirror::Rsync/;
+use base qw/SVN::Notify::Mirror::Rsync Class::Accessor::Fast/;
 use SVN::Client;
 use UFL::WebAdmin::SiteDeploy;
 
 __PACKAGE__->register_attributes(
     'repos_uri' => 'repos-uri:s',
 );
+
+__PACKAGE__->mk_accessors(qw/_svn_client/);
 
 our $VERSION = $UFL::WebAdmin::SiteDeploy::VERSION;
 
@@ -29,6 +31,21 @@ local checkout directory if it doesn't already exist before doing
 anything else.
 
 =head1 METHODS
+
+=head2 new
+
+Create a new Subversion client for this instance.
+
+=cut
+
+sub new {
+    my $self = shift->SUPER::new(@_);
+
+    my $ctx = SVN::Client->new;
+    $self->_svn_client($ctx);
+
+    return $self;
+}
 
 =head2 _cd_run
 
@@ -66,13 +83,11 @@ repository URL.
 sub _maybe_switch_checkout {
     my ($self, $path) = @_;
 
-    my $ctx = SVN::Client->new;
-
     my $uri;
-    $ctx->info($path, undef, 'WORKING', sub { $uri = $_[1]->URL }, 0);
+    $self->_svn_client->info($path, undef, 'WORKING', sub { $uri = $_[1]->URL }, 0);
 
     if ($self->repos_uri ne $uri) {
-        $ctx->switch($path, $self->repos_uri, $self->revision, 1);
+        $self->_svn_client->switch($path, $self->repos_uri, $self->revision, 1);
     }
 }
 
@@ -85,7 +100,7 @@ Checkout the configured repository to the specified path.
 sub _checkout_repo {
     my ($self, $path) = @_;
 
-    system($self->svn_binary, 'checkout', $self->repos_uri, $path);
+    $self->_svn_client->checkout($self->repos_uri, $path, $self->revision, 1);
 }
 
 =head1 AUTHOR

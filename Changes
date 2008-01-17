@@ -2,6 +2,8 @@ Revision history for UFL-WebAdmin-SiteDeploy
 
 0.02
         - Improve handling of cases where an svn switch is needed
+        - Switch to using Subversion bindings (SVN::Client) instead of
+          relying on a command-line client
 
 0.01  Fri Jan 11 17:34:05 EST 2008
         - Initial revision
