@@ -1,6 +1,6 @@
 Revision history for UFL-WebAdmin-SiteDeploy
 
-0.03
+0.03  Mon Mar 31 19:31:33 EDT 2008
         - Add dependencies on the explicit path of binaries used in
           the scripts
         - Update Trac URL
