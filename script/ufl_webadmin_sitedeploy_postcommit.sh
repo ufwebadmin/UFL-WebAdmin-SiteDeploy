@@ -29,11 +29,9 @@
 # On a Windows system, you should name the hook program
 # 'post-commit.bat' or 'post-commit.exe',
 # but the basic idea is the same.
-# 
-# Here is an example hook script, for a Unix /bin/sh interpreter:
 
-SVNNOTIFY=/usr/bin/svnnotify
 SVNLOOK=/usr/bin/svnlook
+SVNNOTIFY=/usr/bin/svnnotify
 
 REPO="$1"
 REV="$2"
@@ -41,7 +39,7 @@ LOG="$($SVNLOOK log -r "$REV" "$REPO")"
 AUTHOR="$($SVNLOOK author -r "$REV" "$REPO")"
 
 TRAC_DIR="/var/lib/trac/$(basename $REPO)"
-TRAC_URL="http://dev.webadmin.ufl.edu/trac/$(basename $REPO)"
+TRAC_URL="http://trac.webadmin.ufl.edu/$(basename $REPO)"
 
 "$SVNNOTIFY" --repos-path "$REPO" --revision "$REV" --svnlook "$SVNLOOK" --to webadmin-dev-l@lists.ufl.edu --from webmaster@ufl.edu --subject-prefix "[WebAdmin SVN]" --subject-cx --with-diff
 
