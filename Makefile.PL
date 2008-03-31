@@ -10,12 +10,17 @@ requires 'SVN::Notify::Config';
 requires 'SVN::Notify::Mirror::Rsync';
 
 # For script/*.sh
-requires_external_bin 'bash';
+requires_external_bin '/bin/sh';
+requires_external_bin '/usr/bin/perl';
+requires_external_bin '/usr/bin/svnlook';
+requires_external_bin '/usr/bin/svnnotify';
+requires_external_bin '/usr/local/bin/trac-post-commit';
 
 # All for SVN::Notify::Mirror::Rsync::AutoCreateCheckout
+requires_external_bin 'rsync';
+requires_external_bin 'ssh';
 requires_external_bin 'svn';
 requires_external_bin 'svnlook';
-requires_external_bin 'ssh';
 
 build_requires 'Cwd';
 build_requires 'File::Path';

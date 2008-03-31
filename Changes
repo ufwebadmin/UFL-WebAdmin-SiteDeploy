@@ -1,5 +1,9 @@
 Revision history for UFL-WebAdmin-SiteDeploy
 
+0.03
+        - Add dependencies on the explicit path of binaries used in
+          the scripts
+
 0.02  Thu Jan 17 17:43:53 EST 2008
         - Improve handling of cases where an svn switch is needed
         - Switch to using Subversion bindings (SVN::Client) instead of

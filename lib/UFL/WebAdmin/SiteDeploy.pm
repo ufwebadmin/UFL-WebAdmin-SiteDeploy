@@ -3,7 +3,7 @@ package UFL::WebAdmin::SiteDeploy;
 use strict;
 use warnings;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03_01';
 
 =head1 NAME
 
