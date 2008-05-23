@@ -4,10 +4,15 @@ name     'UFL-WebAdmin-SiteDeploy';
 all_from 'lib/UFL/WebAdmin/SiteDeploy.pm';
 
 requires 'Class::Accessor::Fast';
+requires 'File::Rsync';
+requires 'Moose';
+requires 'Moose::Util::TypeConstraints';
+requires 'Path::Class::Dir';
 requires 'SVN::Client';
 requires 'SVN::Notify';
 requires 'SVN::Notify::Config';
 requires 'SVN::Notify::Mirror::Rsync';
+requires 'URI';
 
 # For script/*.sh
 requires_external_bin '/bin/sh';
