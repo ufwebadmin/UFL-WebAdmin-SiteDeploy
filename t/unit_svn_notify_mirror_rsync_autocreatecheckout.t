@@ -9,7 +9,7 @@ use FindBin;
 use Test::More;
 
 BEGIN {
-    plan skip_all => "set TEST_AUTHOR and set TEST_RSYNC_HOSTNAME to something corresponding to localhost that is listed in .ssh/known_hosts"
+    plan skip_all => "set TEST_AUTHOR to run these tests"
         unless $ENV{TEST_AUTHOR};
     plan tests => 5 + 4*9;
 
@@ -22,12 +22,14 @@ my $CHECKOUT_DIR = File::Spec->join($SCRATCH_DIR, 'checkout');
 my $RSYNC_DIR    = File::Spec->join($SCRATCH_DIR, 'rsync');
 diag("repo_dir = [$REPO_DIR], checkout_dir = [$CHECKOUT_DIR], rsync_dir = [$RSYNC_DIR]");
 
+my $DEFAULT_RSYNC_HOSTNAME = qx{hostname -f};
+chomp $DEFAULT_RSYNC_HOSTNAME;
 my %NOTIFIER_ARGS = (
     repos_path => $REPO_DIR,
     to         => $CHECKOUT_DIR,
     revision   => 15,
     rsync_ssh  => 1,
-    rsync_host => $ENV{TEST_RSYNC_HOSTNAME},
+    rsync_host => $ENV{TEST_RSYNC_HOSTNAME} || $DEFAULT_RSYNC_HOSTNAME,
     rsync_dest => $RSYNC_DIR,
     rsync_args => { recursive => 1 },
 );
