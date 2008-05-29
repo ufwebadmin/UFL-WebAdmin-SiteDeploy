@@ -88,11 +88,11 @@ repository URL.
 This is helpful, for example, when switching a site from trunk to a
 branch.
 
-Additionally, a tag pattern is configured, the working copy URL
-matches the tag pattern, and a new tag is created matching the
-pattern, switch the working copy to the new tag. This overrides the
-switching behavior of L<SVN::Notify::Mirror/execute>, which assumes
-too much about the structure of the repository.
+Additionally - if a tag pattern is configured, the working copy URL
+matches the tag pattern, and a new tag is created matching the pattern
+- switch the working copy to the new tag. This overrides the switching
+behavior of L<SVN::Notify::Mirror/execute>, which assumes too much
+about the structure of the repository.
 
 =cut
 
