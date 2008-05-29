@@ -73,7 +73,7 @@ sub _cd_run {
     }
     else {
         # Run the checkout
-        $self->_checkout_repo($path);
+        $self->_create_checkout($path);
     }
 
     $self->SUPER::_cd_run(@_);
@@ -123,13 +123,13 @@ sub _maybe_switch_checkout {
     }
 }
 
-=head2 _checkout_repo
+=head2 _create_checkout
 
 Checkout the configured repository to the specified path.
 
 =cut
 
-sub _checkout_repo {
+sub _create_checkout {
     my ($self, $path) = @_;
 
     $self->_svn_client->checkout($self->repos_uri, $path, $self->revision, 1);
