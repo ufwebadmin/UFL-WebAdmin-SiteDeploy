@@ -1,0 +1,94 @@
+id: 7.c.r15/0
+type: file
+pred: 7.0.r14/17
+count: 1
+text: 14 0 4 0 d41d8cd98f00b204e9800998ecf8427e
+cpath: /tags/200805291452/htdocs/index.html
+copyfrom: 14 /trunk/htdocs/index.html
+
+PLAIN
+K 10
+index.html
+V 14
+file 7.c.r15/0
+K 8
+test.txt
+V 15
+file 1.5.r10/62
+END
+ENDREP
+id: 6.b.r15/269
+type: dir
+pred: 6.0.r10/279
+count: 2
+text: 15 182 74 74 8196c676042084f814d89daa0759fa67
+cpath: /tags/200805291452/htdocs
+copyroot: 15 /tags/200805291452
+
+PLAIN
+K 6
+htdocs
+V 15
+dir 6.b.r15/269
+END
+ENDREP
+id: 5.b.r15/489
+type: dir
+pred: 5.0.r10/468
+count: 3
+text: 15 440 36 36 f86c92678d6fcc4d4cc198cc9f9784e0
+cpath: /tags/200805291452
+copyfrom: 13 /trunk
+
+PLAIN
+K 12
+200805291436
+V 14
+dir 5.6.r9/206
+K 12
+200805291437
+V 13
+dir 5.8.r11/0
+K 12
+200805291452
+V 15
+dir 5.b.r15/489
+END
+ENDREP
+id: 4.0.r15/772
+type: dir
+pred: 4.0.r11/242
+count: 3
+text: 15 641 118 118 a84f1d43caef305a36daa471ef2505f3
+cpath: /tags
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 15
+dir 2.0.r13/649
+K 4
+tags
+V 15
+dir 4.0.r15/772
+K 5
+trunk
+V 15
+dir 5.0.r14/425
+END
+ENDREP
+id: 0.0.r15/1019
+type: dir
+pred: 0.0.r14/671
+count: 15
+text: 15 907 99 99 dae775b3b80c030d633e63654a73be91
+cpath: /
+copyroot: 0 /
+
+7._1.t14-1 add false false /tags/200805291452/htdocs/index.html
+14 /trunk/htdocs/index.html
+5._0.t14-1 add false false /tags/200805291452
+13 /trunk
+
+1019 1150

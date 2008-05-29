@@ -1,5 +1,9 @@
 Revision history for UFL-WebAdmin-SiteDeploy
 
+0.04
+        - Improve on tag handling of SVN::Notify::Mirror (changes
+          configuration parameter from tag_regex to tag_pattern)
+
 0.03  Mon Mar 31 19:31:33 EDT 2008
         - Add dependencies on the explicit path of binaries used in
           the scripts

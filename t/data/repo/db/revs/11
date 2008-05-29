@@ -1,0 +1,54 @@
+id: 5.8.r11/0
+type: dir
+pred: 5.0.r10/468
+count: 3
+text: 10 419 36 36 2876ba59f64f52f46c5f9dc5bd7212d6
+cpath: /tags/200805291437
+copyfrom: 10 /trunk
+
+PLAIN
+K 12
+200805291436
+V 14
+dir 5.6.r9/206
+K 12
+200805291437
+V 13
+dir 5.8.r11/0
+END
+ENDREP
+id: 4.0.r11/242
+type: dir
+pred: 4.0.r9/409
+count: 2
+text: 11 150 79 79 7ca4733bbf9e162c8499bbb57124fd18
+cpath: /tags
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 13
+dir 2.0.r8/17
+K 4
+tags
+V 15
+dir 4.0.r11/242
+K 5
+trunk
+V 15
+dir 5.0.r10/468
+END
+ENDREP
+id: 0.0.r11/484
+type: dir
+pred: 0.0.r10/710
+count: 11
+text: 11 374 97 97 60a13afad76befe1d215f220c95ce9d9
+cpath: /
+copyroot: 0 /
+
+5._0.t10-1 add false false /tags/200805291437
+10 /trunk
+
+484 614

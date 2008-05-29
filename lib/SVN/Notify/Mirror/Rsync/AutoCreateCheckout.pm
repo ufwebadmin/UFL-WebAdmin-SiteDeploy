@@ -7,7 +7,8 @@ use SVN::Client;
 use UFL::WebAdmin::SiteDeploy;
 
 __PACKAGE__->register_attributes(
-    'repos_uri' => 'repos-uri:s',
+    'repos_uri'   => 'repos-uri:s',
+    'tag_pattern' => 'tag-pattern:s',
 );
 
 __PACKAGE__->mk_accessors(qw/_svn_client/);
@@ -20,7 +21,9 @@ SVN::Notify::Mirror::Rsync::AutoCreateCheckout - Automatically create the checko
 
 =head1 SYNOPSIS
 
-    svnnotify --handler Mirror::Rsync::AutoCreateCheckout [...]
+    svnnotify --handler Mirror::Rsync::AutoCreateCheckout \
+        [--repos-uri "file:///var/svn/repos/websites/www.ufl.edu/trunk"]
+        [--tag-pattern "\d{12}"] \
 
 See also L<SVN::Notify::Mirror::Rsync>.
 
@@ -29,6 +32,10 @@ See also L<SVN::Notify::Mirror::Rsync>.
 This overrides L<SVN::Notify::Mirror::Rsync/_cd_run> to create the
 local checkout directory if it doesn't already exist before doing
 anything else.
+
+Additionally, it improves upon the tag handling of
+L<SVN::Notify::Mirror>, which forces a specific repository structure
+on the user.
 
 =head1 METHODS
 
@@ -81,10 +88,11 @@ repository URL.
 This is helpful, for example, when switching a site from trunk to a
 branch.
 
-NOTE: The case of tags is still not ideal due to the way that
-L<SVN::Notify::Mirror/execute> handles switching. It is recommended
-that the first tag be created and then any mirrored path be configured
-with a C<repos_uri> of that tag.
+Additionally, a tag pattern is configured, the working copy URL
+matches the tag pattern, and a new tag is created matching the
+pattern, switch the working copy to the new tag. This overrides the
+switching behavior of L<SVN::Notify::Mirror/execute>, which assumes
+too much about the structure of the repository.
 
 =cut
 
@@ -94,7 +102,23 @@ sub _maybe_switch_checkout {
     my $uri;
     $self->_svn_client->info($path, undef, 'WORKING', sub { $uri = $_[1]->URL }, 0);
 
-    if ($self->repos_uri ne $uri) {
+    if (my $tag_pattern = $self->tag_pattern and my @added_files = @{ $self->{files}{A} || [] }) {
+        # Check for a new tag
+        if ($uri =~ /($tag_pattern)/) {
+            my $old_tag = $1;
+
+            # We only care about the first entry, the added tag directory
+            my $tag_dir = $added_files[0];
+            if ($tag_dir =~ /($tag_pattern)/) {
+                my $new_tag = $1;
+                $uri =~ s/$old_tag/$new_tag/;
+
+                $self->_svn_client->switch($path, $uri, $self->revision, 1);
+            }
+        }
+    }
+    elsif ($self->repos_uri ne $uri) {
+        # Assume we've been configured to switch to e.g. a branch
         $self->_svn_client->switch($path, $self->repos_uri, $self->revision, 1);
     }
 }

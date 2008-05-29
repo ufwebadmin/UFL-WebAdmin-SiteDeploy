@@ -11,7 +11,7 @@ use Test::More;
 BEGIN {
     plan skip_all => "set TEST_AUTHOR and set TEST_RSYNC_HOSTNAME to something corresponding to localhost that is listed in .ssh/known_hosts"
         unless $ENV{TEST_AUTHOR};
-    plan tests => 21;
+    plan tests => 5 + 4*9;
 
     use_ok('SVN::Notify::Mirror::Rsync::AutoCreateCheckout');
 }
@@ -25,7 +25,7 @@ diag("repo_dir = [$REPO_DIR], checkout_dir = [$CHECKOUT_DIR], rsync_dir = [$RSYN
 my %NOTIFIER_ARGS = (
     repos_path => $REPO_DIR,
     to         => $CHECKOUT_DIR,
-    revision   => 6,
+    revision   => 15,
     rsync_ssh  => 1,
     rsync_host => $ENV{TEST_RSYNC_HOSTNAME},
     rsync_dest => $RSYNC_DIR,
@@ -43,7 +43,7 @@ run_tests(
     [ 'test.txt' ],
     {   
         %NOTIFIER_ARGS,
-        repos_uri  => "file://$REPO_DIR/trunk",
+        repos_uri  => "file://$REPO_DIR/trunk/htdocs",
     },
 );
 
@@ -57,9 +57,43 @@ run_tests(
     [ 'test2.txt' ],
     {   
         %NOTIFIER_ARGS,
-        repos_uri  => "file://$REPO_DIR/branches/test",
+        repos_uri  => "file://$REPO_DIR/branches/test/htdocs",
     },
 );
+
+# Using tags with a suffix
+File::Path::rmtree($SCRATCH_DIR) if -d $SCRATCH_DIR;
+ok(! -d $CHECKOUT_DIR, 'checkout directory does not exist');
+
+# Initial checkout
+run_tests(
+    $SCRATCH_DIR,
+    $CHECKOUT_DIR,
+    $RSYNC_DIR,
+    [ 'test.txt' ],
+    {
+        %NOTIFIER_ARGS,
+        revision    => 9,
+        tag_pattern => qr|tags/\d{12}|,
+        repos_uri   => "file://$REPO_DIR/tags/200805291436/htdocs",
+    },
+);
+
+ok(-d $CHECKOUT_DIR, 'checkout directory exists');
+
+# Switching to new tag
+run_tests(
+    $SCRATCH_DIR,
+    $CHECKOUT_DIR,
+    $RSYNC_DIR,
+    [ 'index.html' ],
+    {
+        %NOTIFIER_ARGS,
+        tag_pattern => qr|tags/\d{12}|,
+        repos_uri   => "file://$REPO_DIR/tags/200805291436/htdocs",
+    },
+);
+
 
 sub run_tests {
     my ($scratch_dir, $checkout_dir, $rsync_dir, $files, $args) = @_;

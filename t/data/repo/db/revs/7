@@ -1,0 +1,68 @@
+id: 1.5.r7/0
+type: file
+pred: 1.1.r2/0
+count: 2
+text: 1 0 25 13 3b59af1fb198c1c2c68dbfba633daaa5
+cpath: /trunk/htdocs/test.txt
+copyfrom: 6 /trunk/test.txt
+
+PLAIN
+K 8
+test.txt
+V 13
+file 1.5.r7/0
+END
+ENDREP
+id: 6.0.r7/205
+type: dir
+count: 0
+text: 7 156 36 36 6fdae53587e7fa164e77f5d86891f806
+cpath: /trunk/htdocs
+copyroot: 0 /
+
+PLAIN
+K 6
+htdocs
+V 14
+dir 6.0.r7/205
+END
+ENDREP
+id: 5.0.r7/374
+type: dir
+pred: 5.0.r2/193
+count: 1
+text: 7 326 35 35 932fb10e0058256f358ce505f2512ed8
+cpath: /trunk
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 14
+dir 2.0.r6/415
+K 4
+tags
+V 14
+dir 4.0.r2/541
+K 5
+trunk
+V 14
+dir 5.0.r7/374
+END
+ENDREP
+id: 0.0.r7/614
+type: dir
+pred: 0.0.r6/658
+count: 7
+text: 7 505 96 96 3f26b9d43eb679159269b445c2617ea6
+cpath: /
+copyroot: 0 /
+
+1.1.r2/0 delete false false /trunk/test.txt
+
+1._0.t6-1 add false false /trunk/htdocs/test.txt
+6 /trunk/test.txt
+_0.0.t6-1 add false false /trunk/htdocs
+
+
+614 740

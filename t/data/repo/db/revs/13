@@ -1,0 +1,82 @@
+id: 1.a.r13/0
+type: file
+pred: 1.5.r10/62
+count: 4
+text: 10 0 42 30 235b60f7622e196c3ce66c4b535bce3d
+cpath: /branches/test/htdocs/test2.txt
+copyfrom: 12 /branches/test/htdocs/test.txt
+
+PLAIN
+K 9
+test2.txt
+V 14
+file 1.a.r13/0
+END
+ENDREP
+id: 6.9.r13/236
+type: dir
+pred: 6.0.r10/279
+count: 2
+text: 13 185 38 38 117e09073004d047230d009ac76d6659
+cpath: /branches/test/htdocs
+copyroot: 12 /branches/test
+
+PLAIN
+K 6
+htdocs
+V 15
+dir 6.9.r13/236
+END
+ENDREP
+id: 5.9.r13/448
+type: dir
+pred: 5.9.r12/0
+count: 4
+text: 13 399 36 36 c87c96ef6faabd1820cdd7e718840743
+cpath: /branches/test
+copyroot: 12 /branches/test
+
+PLAIN
+K 4
+test
+V 15
+dir 5.9.r13/448
+END
+ENDREP
+id: 2.0.r13/649
+type: dir
+pred: 2.0.r12/191
+count: 7
+text: 13 602 34 34 7f4575c777c301edc7d1a8f86af4ef61
+cpath: /branches
+copyroot: 0 /
+
+PLAIN
+K 8
+branches
+V 15
+dir 2.0.r13/649
+K 4
+tags
+V 15
+dir 4.0.r11/242
+K 5
+trunk
+V 15
+dir 5.0.r10/468
+END
+ENDREP
+id: 0.0.r13/898
+type: dir
+pred: 0.0.r12/438
+count: 13
+text: 13 786 99 99 3950070efc333f4b1e77bf4a68f91137
+cpath: /
+copyroot: 0 /
+
+1.5.r10/62 delete false false /branches/test/htdocs/test.txt
+
+1._0.t12-1 add false false /branches/test/htdocs/test2.txt
+12 /branches/test/htdocs/test.txt
+
+898 1028
