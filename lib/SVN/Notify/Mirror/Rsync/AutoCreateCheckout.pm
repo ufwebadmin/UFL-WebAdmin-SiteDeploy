@@ -22,7 +22,7 @@ SVN::Notify::Mirror::Rsync::AutoCreateCheckout - Automatically create the checko
 =head1 SYNOPSIS
 
     svnnotify --handler Mirror::Rsync::AutoCreateCheckout \
-        [--repos-uri "file:///var/svn/repos/websites/www.ufl.edu/trunk"]
+        --repos-uri "file:///var/svn/repos/websites/www.ufl.edu/trunk"
         [--tag-pattern "\d{12}"] \
 
 See also L<SVN::Notify::Mirror::Rsync>.
