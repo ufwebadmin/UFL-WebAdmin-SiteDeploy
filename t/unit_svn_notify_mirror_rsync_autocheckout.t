@@ -13,7 +13,7 @@ BEGIN {
         unless $ENV{TEST_AUTHOR};
     plan tests => 5 + 4*9;
 
-    use_ok('SVN::Notify::Mirror::Rsync::AutoCreateCheckout');
+    use_ok('SVN::Notify::Mirror::Rsync::AutoCheckout');
 }
 
 my $REPO_DIR     = File::Spec->join($FindBin::Bin, 'data', 'repo');
@@ -102,14 +102,14 @@ sub run_tests {
 
     my $cwd = Cwd::getcwd();
 
-    my $notifier = SVN::Notify::Mirror::Rsync::AutoCreateCheckout->new(%$args);
+    my $notifier = SVN::Notify::Mirror::Rsync::AutoCheckout->new(%$args);
 
-    isa_ok($notifier, 'SVN::Notify::Mirror::Rsync::AutoCreateCheckout');
+    isa_ok($notifier, 'SVN::Notify::Mirror::Rsync::AutoCheckout');
     isa_ok($notifier, 'SVN::Notify::Mirror::Rsync');
     isa_ok($notifier, 'SVN::Notify::Mirror');
     isa_ok($notifier, 'SVN::Notify');
 
-    ok($notifier->prepare, 'prepared AutoCreateCheckout');
+    ok($notifier->prepare, 'prepared AutoCheckout');
 
     # Close and the reopen STDOUT to avoid confusion in Test::Harness with the svn output
     close STDOUT or die "Could not close STDOUT: $!";
