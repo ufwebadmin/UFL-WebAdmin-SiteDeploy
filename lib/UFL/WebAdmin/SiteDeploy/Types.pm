@@ -28,6 +28,9 @@ UFL::WebAdmin::SiteDeploy::Types - Type definitions for UFL::WebAdmin::SiteDeplo
 
 =head1 SYNOPSIS
 
+    use Moose;
+    use UFL::WebAdmin::SiteDeploy::Types;
+
     has 'uri' => (
         is => 'rw',
         isa => 'URI',
