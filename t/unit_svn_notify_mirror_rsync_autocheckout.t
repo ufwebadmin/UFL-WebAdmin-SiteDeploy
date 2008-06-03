@@ -2,7 +2,6 @@
 
 use strict;
 use warnings;
-use Cwd ();
 use File::Path ();
 use File::Spec;
 use FindBin;
@@ -114,8 +113,6 @@ run_tests(
 sub run_tests {
     my ($scratch_dir, $checkout_dir, $rsync_dir, $files, $repos_uri, $args) = @_;
 
-    my $cwd = Cwd::getcwd();
-
     my $notifier = SVN::Notify::Mirror::Rsync::AutoCheckout->new(%$args);
 
     isa_ok($notifier, 'SVN::Notify::Mirror::Rsync::AutoCheckout');
@@ -144,8 +141,4 @@ sub run_tests {
         ok(-f File::Spec->join($checkout_dir, $file), "checkout directory contains checkout file $file");
         ok(-f File::Spec->join($rsync_dir, $file), "rsync directory contains checkout file $file");
     }
-
-    # Return to previous working directory (SVN::Notify::Mirror
-    # doesn't, so subsequent tests fail, grr)
-    chdir($cwd);
 }

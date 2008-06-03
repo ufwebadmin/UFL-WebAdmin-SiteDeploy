@@ -1,7 +1,10 @@
 package SVN::Notify::Mirror::Rsync::AutoCheckout;
 
 use Moose;
+use Cwd ();
 use UFL::WebAdmin::SiteDeploy;
+
+our $VERSION = $UFL::WebAdmin::SiteDeploy::VERSION;
 
 extends 'SVN::Notify::Mirror::Rsync';
 
@@ -11,11 +14,24 @@ __PACKAGE__->register_attributes(
     log_category => 'log-category:s',
 );
 
-with 'UFL::WebAdmin::SiteDeploy::Role::CreateCheckout';
-with 'UFL::WebAdmin::SiteDeploy::Role::SwitchCheckout';
-with 'UFL::WebAdmin::SiteDeploy::Role::CommitLogger';
+after 'new' => sub {
+    my ($self) = @_;
 
-our $VERSION = $UFL::WebAdmin::SiteDeploy::VERSION;
+    $self->log_category(__PACKAGE__) unless $self->log_category;
+};
+
+override 'execute' => sub {
+    my ($self) = @_;
+
+    my $cwd = Cwd::getcwd();
+    super();
+    chdir($cwd);
+};
+
+# XXX: Apply roles after overriding execute; otherwise Moose barfs
+with 'UFL::WebAdmin::SiteDeploy::Role::CreateCheckout',
+    'UFL::WebAdmin::SiteDeploy::Role::SwitchCheckout',
+    'UFL::WebAdmin::SiteDeploy::Role::CommitLogger';
 
 =head1 NAME
 
@@ -45,19 +61,13 @@ on the user.
 =head2 new
 
 Override L<SVN::Notify/new> to set up any default values for
-attributes registered via L<SVN::Notify/register_attributes>. (This is
-done using standard inheritance due because L<Moose> is not injected
-into the code above this class.)
+attributes registered via L<SVN::Notify/register_attributes>.
 
-=cut
+=head2 execute
 
-sub new {
-    my $self = shift->SUPER::new(@_);
-
-    $self->log_category(__PACKAGE__) unless $self->log_category;
-
-    return $self;
-}
+Override L<SVN::Notify::Mirror/execute> to return to the previous
+working directory. Normally, L<SVN::Notify::Mirror/execute> switches
+to the configured path.
 
 =head1 AUTHOR
 
