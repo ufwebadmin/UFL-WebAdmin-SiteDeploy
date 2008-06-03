@@ -4,7 +4,9 @@ name     'UFL-WebAdmin-SiteDeploy';
 all_from 'lib/UFL/WebAdmin/SiteDeploy.pm';
 
 requires 'Class::Accessor::Fast';
+requires 'Log::Log4perl';
 requires 'Moose';
+requires 'Moose::Role';
 requires 'Moose::Util::TypeConstraints';
 requires 'Path::Class::Dir';
 requires 'SVN::Client';
@@ -30,6 +32,7 @@ build_requires 'Cwd';
 build_requires 'File::Path';
 build_requires 'File::Spec';
 build_requires 'FindBin';
+build_requires 'Test::Log4perl';
 build_requires 'Test::More';
 
 install_script glob('script/*.sh');

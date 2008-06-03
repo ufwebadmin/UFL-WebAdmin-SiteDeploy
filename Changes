@@ -7,6 +7,7 @@ Revision history for UFL-WebAdmin-SiteDeploy
           Moose roles
         - Rename SVN::Notify::Mirror::Rsync::AutoCreateCheckout to
           SVN::Notify::Mirror::Rsync::AutoCheckout
+        - Add logging of mirror operations using Log::Log4perl
 
 0.03  Mon Mar 31 19:31:33 EDT 2008
         - Add dependencies on the explicit path of binaries used in

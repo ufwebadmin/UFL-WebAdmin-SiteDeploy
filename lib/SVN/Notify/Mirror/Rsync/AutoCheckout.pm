@@ -6,12 +6,14 @@ use UFL::WebAdmin::SiteDeploy;
 extends 'SVN::Notify::Mirror::Rsync';
 
 __PACKAGE__->register_attributes(
-    'repos_uri'   => 'repos-uri:s',
-    'tag_pattern' => 'tag-pattern:s',
+    repos_uri    => 'repos-uri:s',
+    tag_pattern  => 'tag-pattern:s',
+    log_category => 'log-category:s',
 );
 
 with 'UFL::WebAdmin::SiteDeploy::Role::CreateCheckout';
 with 'UFL::WebAdmin::SiteDeploy::Role::SwitchCheckout';
+with 'UFL::WebAdmin::SiteDeploy::Role::CommitLogger';
 
 our $VERSION = $UFL::WebAdmin::SiteDeploy::VERSION;
 
@@ -24,6 +26,7 @@ SVN::Notify::Mirror::Rsync::AutoCheckout - Automatically create the checkout dir
     svnnotify --handler Mirror::Rsync::AutoCheckout \
         --repos-uri "file:///var/svn/repos/websites/www.ufl.edu/trunk"
         [--tag-pattern "\d{12}"] \
+        [--log-category "UFL.WebAdmin.SVN.WebSites"]
 
 See also L<SVN::Notify::Mirror::Rsync>.
 
@@ -36,6 +39,25 @@ anything else.
 Additionally, it improves upon the tag handling of
 L<SVN::Notify::Mirror>, which forces a specific repository structure
 on the user.
+
+=head1 METHODS
+
+=head2 new
+
+Override L<SVN::Notify/new> to set up any default values for
+attributes registered via L<SVN::Notify/register_attributes>. (This is
+done using standard inheritance due because L<Moose> is not injected
+into the code above this class.)
+
+=cut
+
+sub new {
+    my $self = shift->SUPER::new(@_);
+
+    $self->log_category(__PACKAGE__) unless $self->log_category;
+
+    return $self;
+}
 
 =head1 AUTHOR
 
