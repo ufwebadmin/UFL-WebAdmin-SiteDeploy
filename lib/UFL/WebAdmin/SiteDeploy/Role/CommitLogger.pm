@@ -12,13 +12,6 @@ has '_log' => (
     lazy => 1,
 );
 
-has '_svn_client' => (
-    is => 'rw',
-    isa => 'SVN::Client',
-    default => sub { SVN::Client->new },
-    lazy => 1,
-);
-
 before 'execute' => sub {
     my ($self) = @_;
 
@@ -41,8 +34,11 @@ before '_cd_run' => sub {
 after '_cd_run' => sub {
     my ($self, $path) = @_;
 
+    my $client = SVN::Client->new;
+
     my $info;
-    $self->_svn_client->info($path, undef, $self->revision, sub { $info = $_[1] }, 0);
+    $client->info($path, undef, $self->revision, sub { $info = $_[1] }, 0);
+
     $self->_log->info("Mirroring " . $info->URL . ", revision " . $info->rev);
     $self->_log->debug("Last change: revision " . $info->last_changed_rev . " by " . $info->last_changed_author);
 };

@@ -6,13 +6,6 @@ use SVN::Client;
 requires 'repos_uri';
 requires 'revision';
 
-has '_svn_client' => (
-    is => 'rw',
-    isa => 'SVN::Client',
-    default => sub { SVN::Client->new },
-    lazy => 1,
-);
-
 before '_cd_run' => sub {
     my ($self, $path) = @_;
 
@@ -60,8 +53,10 @@ sub maybe_switch_checkout {
 
     return unless -d $path;
 
+    my $client = SVN::Client->new;
+
     my $uri;
-    $self->_svn_client->info($path, undef, 'WORKING', sub { $uri = $_[1]->URL }, 0);
+    $client->info($path, undef, 'WORKING', sub { $uri = $_[1]->URL }, 0);
 
     if (my $tag_pattern = $self->tag_pattern and my @added_files = @{ $self->{files}{A} || [] }) {
         # Check for a new tag
@@ -74,13 +69,13 @@ sub maybe_switch_checkout {
                 my $new_tag = $1;
                 $uri =~ s/$old_tag/$new_tag/;
 
-                $self->_svn_client->switch($path, $uri, $self->revision, 1);
+                $client->switch($path, $uri, $self->revision, 1);
             }
         }
     }
     elsif ($self->repos_uri ne $uri) {
         # Assume we've been configured to switch to e.g. a branch
-        $self->_svn_client->switch($path, $self->repos_uri, $self->revision, 1);
+        $client->switch($path, $self->repos_uri, $self->revision, 1);
     }
 }
 

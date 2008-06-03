@@ -6,13 +6,6 @@ use SVN::Client;
 requires 'repos_uri';
 requires 'revision';
 
-has '_svn_client' => (
-    is => 'rw',
-    isa => 'SVN::Client',
-    default => sub { SVN::Client->new },
-    lazy => 1,
-);
-
 before '_cd_run' => sub {
     my ($self, $path) = @_;
 
@@ -48,7 +41,8 @@ sub create_checkout {
 
     return if -d $path;
 
-    $self->_svn_client->checkout($self->repos_uri, $path, $self->revision, 1);
+    my $client = SVN::Client->new;
+    $client->checkout($self->repos_uri, $path, $self->revision, 1);
 }
 
 =head1 SEE ALSO
