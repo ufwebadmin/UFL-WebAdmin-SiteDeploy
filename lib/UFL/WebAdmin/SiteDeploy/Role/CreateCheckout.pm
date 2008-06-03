@@ -55,7 +55,7 @@ sub create_checkout {
 
 =over 4
 
-=item * L<SVN::Notify::Mirror::Rsync::AutoCheckout>.
+=item * L<SVN::Notify::Mirror::Rsync::AutoCheckout>
 
 =back
 
