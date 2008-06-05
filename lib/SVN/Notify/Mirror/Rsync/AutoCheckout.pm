@@ -57,8 +57,14 @@ on the user.
 
 =head2 new
 
-Override L<SVN::Notify/new> to set up any default values for
-attributes registered via L<SVN::Notify/register_attributes>.
+Override L<SVN::Notify/new> to set up default values for attributes
+registered via L<SVN::Notify/register_attributes>.
+
+=over 4
+
+=item * C<log_category> - the value of C<__PACKAGE__>
+
+=back
 
 =head2 execute
 

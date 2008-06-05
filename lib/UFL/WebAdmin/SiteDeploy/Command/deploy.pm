@@ -8,8 +8,9 @@ use YAML;
 
 extends 'MooseX::App::Cmd::Command';
 
-# XXX: Would like this to be a Path::Class::Dir but coercion fails on
-# XXX: MooseX::Getopt 0.11 and MooseX::App::Cmd 0.02
+# XXX: Would like path and log_config to be Path::Class::Dirs but
+# XXX: coercion fails on MooseX::Getopt 0.11 and MooseX::App::Cmd 0.02
+
 has 'path' => (
     metaclass => 'MooseX::Getopt::Meta::Attribute',
     is => 'rw',
@@ -28,13 +29,21 @@ has 'revision' => (
     documentation => 'the revision to deploy',
 );
 
-has 'config' => (
+has 'svn_notify_config' => (
     metaclass => 'MooseX::Getopt::Meta::Attribute',
     is => 'rw',
     isa => 'Str',
     default => 'svnnotify.yml',
-    cmd_aliases => 'c',
+    cmd_aliases => 's',
     documentation => 'the name of the configuration file in the repository (defaults to svnnotify.yml)',
+);
+
+has 'log_config' => (
+    metaclass => 'MooseX::Getopt::Meta::Attribute',
+    is => 'rw',
+    isa => 'Str',
+    cmd_aliases => 'l',
+    documentation => 'the path to a Log::Log4perl configuration file',
 );
 
 =head1 NAME
@@ -57,12 +66,17 @@ L<SVN::Notify::Config>.
 sub run {
     my ($self, $opt, $args) = @_;
 
-    my $config = $self->_load_config;
+    if ($self->log_config) {
+        require Log::Log4perl;
+        Log::Log4perl->init($self->log_config);
+    }
+
+    my $svn_notify_config = $self->_load_svn_notify_config;
 
     # Normally this work is done in SVN::Notify::Config->import, but
     # that method is a giant hack
     require SVN::Notify::Config;
-    my $handler = SVN::Notify::Config->new($config);
+    my $handler = SVN::Notify::Config->new($svn_notify_config);
     $handler->prepare;
     $handler->execute(
         repos_path => $self->path,
@@ -78,22 +92,22 @@ sub _repository_uri {
     return $uri;
 }
 
-sub _config_uri {
+sub _svn_notify_config_uri {
     my ($self) = @_;
 
     my $uri = $self->_repository_uri;
-    $uri->path_segments($uri->path_segments, $self->config);
+    $uri->path_segments($uri->path_segments, $self->svn_notify_config);
 
     return $uri;
 }
 
-sub _load_config {
+sub _load_svn_notify_config {
     my ($self) = @_;
 
     my $config;
     my $fh = IO::String->new($config);
 
-    my $uri = $self->_config_uri;
+    my $uri = $self->_svn_notify_config_uri;
 
     my $client = SVN::Client->new;
     $client->cat($fh, $uri, $self->revision);

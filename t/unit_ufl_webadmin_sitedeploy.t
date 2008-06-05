@@ -11,9 +11,10 @@ BEGIN {
     use_ok('UFL::WebAdmin::SiteDeploy');
 }
 
-my $REPO_DIR     = File::Spec->join($FindBin::Bin, 'data', 'repo');
-my $SCRATCH_DIR  = File::Spec->join($FindBin::Bin, 'var');
-my $MIRROR_DIR = File::Spec->join($SCRATCH_DIR, 'mirror');
+my $DATA_DIR    = File::Spec->join($FindBin::Bin, 'data');
+my $REPO_DIR    = File::Spec->join($DATA_DIR, 'repo');
+my $SCRATCH_DIR = File::Spec->join($FindBin::Bin, 'var');
+my $MIRROR_DIR  = File::Spec->join($SCRATCH_DIR, 'mirror');
 diag("repo_dir = [$REPO_DIR], mirror_dir = [$MIRROR_DIR]");
 
 my $app = UFL::WebAdmin::SiteDeploy->new;
@@ -43,6 +44,7 @@ is_deeply(
     local @ARGV = ('deploy', '--path', $REPO_DIR, '--revision', 17);
 
     eval { $app->run };
+    diag($@) if $@;
     ok(! $@, 'successfully ran no-op deploy command');
 }
 
@@ -57,7 +59,7 @@ is_deeply(
 
     # Override _load_config to provide a mirror path that we can throw
     # out at the end of the tests
-    local *UFL::WebAdmin::SiteDeploy::Command::deploy::_load_config = sub {
+    local *UFL::WebAdmin::SiteDeploy::Command::deploy::_load_svn_notify_config = sub {
         return {
             'trunk/htdocs' => {
                 handler => 'Mirror',
@@ -67,6 +69,7 @@ is_deeply(
     };
 
     eval { $app->run };
+    diag($@) if $@;
     ok(! $@, 'successfully ran a deploy command');
     ok(-d $MIRROR_DIR, 'mirror directory created');
     ok(-f File::Spec->join($MIRROR_DIR, 'index.html'), 'mirror directory contains checkout file index.html');
@@ -81,7 +84,8 @@ sub create_checkout {
 
     my $repo_path = File::Spec->join($REPO_DIR, $path);
 
-    # Close STDOUT avoid confusion in Test::Harness with the svn output
+    # Close STDOUT avoid confusion in Test::Harness with the svn
+    # output from SVN::Notify::Mirror
     close STDOUT or die "Could not close STDOUT: $!";
 
     system('svn', 'checkout', '-r', $revision, "file://$repo_path", $MIRROR_DIR);
