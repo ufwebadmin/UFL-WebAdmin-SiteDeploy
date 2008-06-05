@@ -38,6 +38,6 @@ build_requires 'FindBin';
 build_requires 'Test::Log4perl';
 build_requires 'Test::More';
 
-install_script glob('script/*.sh');
+install_script glob('script/*.pl');
 
 WriteAll;
