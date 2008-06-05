@@ -1,6 +1,6 @@
 Revision history for UFL-WebAdmin-SiteDeploy
 
-0.04
+0.04  Thu Jun  5 17:00:14 EDT 2008
         - Improve on tag handling of SVN::Notify::Mirror (changes
           configuration parameter from tag_regex to tag_pattern)
         - Refactor SVN::Notify::Mirror::Rsync::AutoCreateCheckout to
