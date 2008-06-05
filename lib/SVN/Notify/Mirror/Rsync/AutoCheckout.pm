@@ -14,7 +14,7 @@ __PACKAGE__->register_attributes(
 after 'new' => sub {
     my ($self) = @_;
 
-    $self->log_category(__PACKAGE__) unless $self->log_category;
+    warn "Log category is not set" unless $self->log_category;
 };
 
 override 'execute' => sub {
@@ -39,7 +39,7 @@ SVN::Notify::Mirror::Rsync::AutoCheckout - Automatically create the checkout dir
     svnnotify --handler Mirror::Rsync::AutoCheckout \
         --repos-uri "file:///var/svn/repos/websites/www.ufl.edu/trunk"
         [--tag-pattern "\d{12}"] \
-        [--log-category "UFL.WebAdmin.SVN.WebSites"]
+        [--log-category "websites"]
 
 See also L<SVN::Notify::Mirror::Rsync>.
 
