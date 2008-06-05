@@ -23,10 +23,8 @@ requires 'URI::file';
 requires 'YAML';
 
 # For script/*.sh
-requires_external_bin '/bin/sh';
 requires_external_bin '/usr/bin/env';
 requires_external_bin 'perl';
-requires_external_bin 'sudo';
 
 # All for SVN::Notify::Mirror::Rsync::AutoCheckout
 requires_external_bin 'rsync';
