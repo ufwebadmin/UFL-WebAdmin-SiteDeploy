@@ -12,7 +12,6 @@ requires 'Moose::Util::TypeConstraints';
 requires 'MooseX::App::Cmd';
 requires 'MooseX::App::Cmd::Command';
 requires 'MooseX::Getopt';
-requires 'MooseX::Getopt::Meta::Attribute',
 requires 'Path::Class::Dir';
 requires 'SVN::Client';
 requires 'SVN::Notify';
