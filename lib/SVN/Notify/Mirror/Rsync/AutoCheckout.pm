@@ -14,7 +14,7 @@ __PACKAGE__->register_attributes(
 override 'execute' => sub {
     my ($self) = @_;
 
-    $self->log_category(__PACKAGE__) unless $self->log_category;
+    warn "Log category is not set" unless $self->log_category;
 
     my $cwd = Cwd::getcwd();
     super();
