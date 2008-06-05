@@ -26,13 +26,13 @@ diag("repo_dir = [$REPO_DIR], checkout_dir = [$CHECKOUT_DIR], rsync_dir = [$RSYN
 my $DEFAULT_RSYNC_HOSTNAME = qx{hostname -f};
 chomp $DEFAULT_RSYNC_HOSTNAME;
 my %NOTIFIER_ARGS = (
-    repos_path  => $REPO_DIR,
-    to          => $CHECKOUT_DIR,
-    revision    => 15,
-    rsync_ssh   => 1,
-    rsync_host  => $ENV{TEST_RSYNC_HOSTNAME} || $DEFAULT_RSYNC_HOSTNAME,
-    rsync_dest  => $RSYNC_DIR,
-    rsync_args  => { recursive => 1 },
+    repos_path   => $REPO_DIR,
+    to           => $CHECKOUT_DIR,
+    revision     => 15,
+    rsync_ssh    => 1,
+    rsync_host   => $ENV{TEST_RSYNC_HOSTNAME} || $DEFAULT_RSYNC_HOSTNAME,
+    rsync_dest   => $RSYNC_DIR,
+    rsync_args   => { recursive => 1 },
     log_category => 'unit_svn_notify_mirror_rsync_autocheckout',
 );
 
