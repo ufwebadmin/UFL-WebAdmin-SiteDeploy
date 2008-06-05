@@ -11,14 +11,10 @@ __PACKAGE__->register_attributes(
     log_category => 'log-category:s',
 );
 
-after 'new' => sub {
-    my ($self) = @_;
-
-    warn "Log category is not set" unless $self->log_category;
-};
-
 override 'execute' => sub {
     my ($self) = @_;
+
+    $self->log_category(__PACKAGE__) unless $self->log_category;
 
     my $cwd = Cwd::getcwd();
     super();
@@ -55,10 +51,10 @@ on the user.
 
 =head1 METHODS
 
-=head2 new
+=head2 execute
 
-Override L<SVN::Notify/new> to set up default values for attributes
-registered via L<SVN::Notify/register_attributes>.
+Override L<SVN::Notify/execute> to set up default values for certain
+attributes registered via L<SVN::Notify/register_attributes>.
 
 =over 4
 
@@ -66,11 +62,9 @@ registered via L<SVN::Notify/register_attributes>.
 
 =back
 
-=head2 execute
-
-Override L<SVN::Notify::Mirror/execute> to return to the previous
-working directory. Normally, L<SVN::Notify::Mirror/execute> switches
-to the configured path.
+Additionally, override L<SVN::Notify::Mirror/execute> to return to the
+previous working directory. Normally, L<SVN::Notify::Mirror/execute>
+switches to the configured path.
 
 =head1 AUTHOR
 
