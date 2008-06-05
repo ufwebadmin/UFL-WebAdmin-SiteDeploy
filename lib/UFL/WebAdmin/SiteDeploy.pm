@@ -1,9 +1,10 @@
 package UFL::WebAdmin::SiteDeploy;
 
-use strict;
-use warnings;
+use Moose;
 
-our $VERSION = '0.03';
+extends 'MooseX::App::Cmd';
+
+our $VERSION = '0.04_01';
 
 =head1 NAME
 
@@ -14,6 +15,8 @@ UFL::WebAdmin::SiteDeploy - Automatic Web site deployment
     svn checkout https://svn.webadmin.ufl.edu/websites/www.ufl.edu/trunk/ www.ufl.edu
     emacs index.html
     svn commit -m "Some cool change"
+
+    ufl_webadmin_sitedeploy.pl deploy --path /var/svn/websites --revision 100
 
 =head1 DESCRIPTION
 
@@ -27,6 +30,14 @@ automatically sent to L<http://test.www.ufl.edu/>.
 
 This saves each committer time and effort in figuring out what files
 need to be uploaded.
+
+=head1 SEE ALSO
+
+=over 4
+
+=item * L<UFL::WebAdmin::SiteDeploy::Command::deploy>
+
+=back
 
 =head1 AUTHOR
 
