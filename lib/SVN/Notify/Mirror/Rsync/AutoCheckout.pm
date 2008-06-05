@@ -2,9 +2,6 @@ package SVN::Notify::Mirror::Rsync::AutoCheckout;
 
 use Moose;
 use Cwd ();
-use UFL::WebAdmin::SiteDeploy;
-
-our $VERSION = $UFL::WebAdmin::SiteDeploy::VERSION;
 
 extends 'SVN::Notify::Mirror::Rsync';
 
