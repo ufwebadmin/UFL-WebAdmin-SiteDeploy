@@ -48,7 +48,6 @@ File::Path::rmtree($SCRATCH_DIR) if -d $SCRATCH_DIR;
 ok(! -d $CHECKOUT_DIR, 'checkout directory does not exist');
 
 run_tests(
-    $SCRATCH_DIR,
     $CHECKOUT_DIR,
     $RSYNC_DIR,
     [ 'test.txt' ],
@@ -63,7 +62,6 @@ run_tests(
 ok(-d $CHECKOUT_DIR, 'checkout directory exists');
 
 run_tests(
-    $SCRATCH_DIR,
     $CHECKOUT_DIR,
     $RSYNC_DIR,
     [ 'test2.txt' ],
@@ -80,7 +78,6 @@ ok(! -d $CHECKOUT_DIR, 'checkout directory does not exist');
 
 # Initial checkout
 run_tests(
-    $SCRATCH_DIR,
     $CHECKOUT_DIR,
     $RSYNC_DIR,
     [ 'test.txt' ],
@@ -97,7 +94,6 @@ ok(-d $CHECKOUT_DIR, 'checkout directory exists');
 
 # Switching to new tag
 run_tests(
-    $SCRATCH_DIR,
     $CHECKOUT_DIR,
     $RSYNC_DIR,
     [ 'index.html' ],
@@ -111,7 +107,7 @@ run_tests(
 
 
 sub run_tests {
-    my ($scratch_dir, $checkout_dir, $rsync_dir, $files, $repos_uri, $args) = @_;
+    my ($checkout_dir, $rsync_dir, $files, $repos_uri, $args) = @_;
 
     my $notifier = SVN::Notify::Mirror::Rsync::AutoCheckout->new(%$args);
 
