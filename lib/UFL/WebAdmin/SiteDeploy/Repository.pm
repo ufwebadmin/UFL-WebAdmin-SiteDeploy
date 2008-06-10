@@ -20,8 +20,8 @@ UFL::WebAdmin::SiteDeploy::Repository - An abstract revision control repository
 
 =head1 SYNOPSIS
 
-    my $site = UFL::WebAdmin::SiteDeploy::Repository::SVN->new(uri => 'file:///var/svn/repos/websites');
-    my $site = UFL::WebAdmin::SiteDeploy::Repository::SVN->new(uri => 'https://svn.webadmin.ufl.edu/repos/websites/');
+    my $repo = UFL::WebAdmin::SiteDeploy::Repository::SVN->new(uri => 'file:///var/svn/repos/websites');
+    my $repo = UFL::WebAdmin::SiteDeploy::Repository::SVN->new(uri => 'https://svn.webadmin.ufl.edu/repos/websites/');
 
 =head1 DESCRIPTION
 
@@ -35,6 +35,18 @@ the repository. For example:
     /
         www.ufl.edu/
         www.webadmin.ufl.edu/
+
+=head1 METHODS
+
+=head2 deploy_site
+
+Deploy the specified L<UFL::WebAdmin::SiteDeploy::Site>.
+
+=cut
+
+sub deploy_site {
+    die "abstract method";
+}
 
 =head1 AUTHOR
 
