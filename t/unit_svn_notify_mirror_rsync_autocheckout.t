@@ -8,6 +8,7 @@ use Path::Class;
 use Test::Log4perl;
 use Test::More;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
+use URI::file;
 
 BEGIN {
     plan skip_all => "set TEST_AUTHOR to run these tests"
@@ -23,9 +24,10 @@ my $TEST_REPO = UFL::WebAdmin::SiteDeploy::TestRepository->new(
 );
 
 my $REPO_DIR     = $TEST_REPO->repository_dir;
+my $REPO_URI     = URI::file->new($REPO_DIR);
 my $CHECKOUT_DIR = $TEST_REPO->checkout_dir;
 my $RSYNC_DIR    = $TEST_REPO->scratch_dir->subdir('rsync');
-diag("repo_dir = [$REPO_DIR], checkout_dir = [$CHECKOUT_DIR], rsync_dir = [$RSYNC_DIR]");
+diag("repo_dir = [$REPO_DIR], repo_uri = [$REPO_URI], checkout_dir = [$CHECKOUT_DIR], rsync_dir = [$RSYNC_DIR]");
 
 my $DEFAULT_RSYNC_HOSTNAME = qx{hostname -f};
 chomp $DEFAULT_RSYNC_HOSTNAME;
@@ -55,10 +57,10 @@ run_tests(
     $CHECKOUT_DIR,
     $RSYNC_DIR,
     [ 'test.txt' ],
-    "file://$REPO_DIR/www.ufl.edu/trunk/htdocs",
+    "$REPO_URI/www.ufl.edu/trunk/htdocs",
     {
         %NOTIFIER_ARGS,
-        repos_uri  => "file://$REPO_DIR/www.ufl.edu/trunk/htdocs",
+        repos_uri  => "$REPO_URI/www.ufl.edu/trunk/htdocs",
     },
 );
 
@@ -69,10 +71,10 @@ run_tests(
     $CHECKOUT_DIR,
     $RSYNC_DIR,
     [ 'test2.txt' ],
-    "file://$REPO_DIR/www.ufl.edu/branches/test/htdocs",
+    "$REPO_URI/www.ufl.edu/branches/test/htdocs",
     {
         %NOTIFIER_ARGS,
-        repos_uri  => "file://$REPO_DIR/www.ufl.edu/branches/test/htdocs",
+        repos_uri  => "$REPO_URI/www.ufl.edu/branches/test/htdocs",
     },
 );
 
@@ -85,12 +87,12 @@ run_tests(
     $CHECKOUT_DIR,
     $RSYNC_DIR,
     [ 'test.txt' ],
-    "file://$REPO_DIR/www.ufl.edu/tags/200806111444/htdocs",
+    "$REPO_URI/www.ufl.edu/tags/200806111444/htdocs",
     {
         %NOTIFIER_ARGS,
         revision    => 4,
         tag_pattern => qr|tags/\d{12}|,
-        repos_uri   => "file://$REPO_DIR/www.ufl.edu/tags/200806111444/htdocs",
+        repos_uri   => "$REPO_URI/www.ufl.edu/tags/200806111444/htdocs",
     },
 );
 
@@ -101,12 +103,12 @@ run_tests(
     $CHECKOUT_DIR,
     $RSYNC_DIR,
     [ 'index.html' ],
-    "file://$REPO_DIR/www.ufl.edu/tags/200806111445/htdocs",
+    "$REPO_URI/www.ufl.edu/tags/200806111445/htdocs",
     {
         %NOTIFIER_ARGS,
         revision    => 6,
         tag_pattern => qr|tags/\d{12}|,
-        repos_uri   => "file://$REPO_DIR/www.ufl.edu/tags/200806111444/htdocs",
+        repos_uri   => "$REPO_URI/www.ufl.edu/tags/200806111444/htdocs",
     },
 );
 

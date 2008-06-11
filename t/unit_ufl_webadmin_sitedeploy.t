@@ -22,17 +22,17 @@ my $REPO_DIR   = $TEST_REPO->repository_dir;
 my $MIRROR_DIR = $TEST_REPO->scratch_dir->subdir('mirror');
 diag("repo_dir = [$REPO_DIR], mirror_dir = [$MIRROR_DIR]");
 
-my $app = UFL::WebAdmin::SiteDeploy->new;
-isa_ok($app, 'UFL::WebAdmin::SiteDeploy');
+my $APP = UFL::WebAdmin::SiteDeploy->new;
+isa_ok($APP, 'UFL::WebAdmin::SiteDeploy');
 
 is_deeply(
-    [ sort $app->command_names ],
+    [ sort $APP->command_names ],
     [ sort qw(--help help -h -? commands deploy) ],
     'list of command names is correct',
 );
 
 is_deeply(
-    [ sort $app->command_plugins ],
+    [ sort $APP->command_plugins ],
     [ sort qw(
         App::Cmd::Command::commands
         App::Cmd::Command::help
@@ -48,7 +48,7 @@ is_deeply(
 
     local @ARGV = ('deploy', '--path', $REPO_DIR->stringify, '--revision', 13);
 
-    eval { $app->run };
+    eval { $APP->run };
     diag($@) if $@;
     ok(! $@, 'successfully ran no-op deploy command');
 }
@@ -73,7 +73,7 @@ is_deeply(
         };
     };
 
-    eval { $app->run };
+    eval { $APP->run };
     diag($@) if $@;
     ok(! $@, 'successfully ran a deploy command');
     ok(-d $MIRROR_DIR, 'mirror directory created');
