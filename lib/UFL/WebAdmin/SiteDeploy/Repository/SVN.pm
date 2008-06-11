@@ -44,6 +44,15 @@ sub deploy_site {
 
     my $src = $self->_source_uri($site);
     my $dst = $self->_destination_uri($site);
+
+    $self->client->log_msg(sub {
+        my ($msg) = @_;
+        $$msg = $message;
+    });
+
+    $self->client->copy($src, $revision, $dst);
+
+    $self->client->log_msg(undef);
 }
 
 =head2 _site_uri

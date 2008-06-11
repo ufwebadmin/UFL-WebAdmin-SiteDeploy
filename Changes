@@ -2,6 +2,9 @@ Revision history for UFL-WebAdmin-SiteDeploy
 
 0.05
         - Refactor tests
+        - Add deploy_site method to
+          UFL::WebAdmin::SiteDeploy::Repository for push-button
+          deployment
 
 0.04  Thu Jun  5 17:00:14 EDT 2008
         - Improve on tag handling of SVN::Notify::Mirror (changes

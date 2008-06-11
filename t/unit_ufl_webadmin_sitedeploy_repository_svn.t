@@ -2,37 +2,68 @@
 
 use strict;
 use warnings;
-use Test::More tests => 25;
+use FindBin;
+use Path::Class;
+use SVN::Client;
+use Test::More tests => 28;
 use UFL::WebAdmin::SiteDeploy::Site;
+use UFL::WebAdmin::SiteDeploy::TestRepository;
+use URI::file;
 
 BEGIN {
     use_ok('UFL::WebAdmin::SiteDeploy::Repository::SVN');
 }
 
-my $site = UFL::WebAdmin::SiteDeploy::Site->new(uri => 'http://www.ufl.edu/');
+my $TEST_REPO = UFL::WebAdmin::SiteDeploy::TestRepository->new(
+    base      => $FindBin::Bin,
+    dump_file => file($FindBin::Bin, 'data', 'repo.dump'),
+);
+
+$TEST_REPO->init;
+
+my $REPO_DIR = $TEST_REPO->repository_dir;
+my $REPO_URI = URI::file->new($REPO_DIR);
+diag("repo_dir = [$REPO_DIR], repo_uri = [$REPO_URI]");
+
+my $SITE = UFL::WebAdmin::SiteDeploy::Site->new(uri => 'http://www.ufl.edu/');
 
 # file repository URI
 {
-    my $repo = UFL::WebAdmin::SiteDeploy::Repository::SVN->new(uri => 'file:///var/svn/repos/websites');
+    my $repo = UFL::WebAdmin::SiteDeploy::Repository::SVN->new(uri => $REPO_URI);
 
     isa_ok($repo, 'UFL::WebAdmin::SiteDeploy::Repository::SVN');
     isa_ok($repo, 'UFL::WebAdmin::SiteDeploy::Repository');
 
     isa_ok($repo->uri, 'URI::file');
-    is($repo->uri, 'file:///var/svn/repos/websites', 'URI is file:///var/svn/repos/websites');
-    is($repo->uri->path, '/var/svn/repos/websites', 'path translated from URI is /var/www/repos/websites');
+    is($repo->uri, $REPO_URI, 'URI is correct');
+    is($repo->uri->path, $REPO_DIR, 'path translated from URI is correct');
 
     isa_ok($repo->client, 'SVN::Client');
 
-    my $src = $repo->_source_uri($site);
+    my $src = $repo->_source_uri($SITE);
     isa_ok($src, 'URI::file');
     isa_ok($src, 'URI');
-    is($src, 'file:///var/svn/repos/websites/www.ufl.edu/trunk', 'source URI matches');
+    is($src, "$REPO_URI/www.ufl.edu/trunk", 'source URI matches');
 
-    my $dst = $repo->_destination_uri($site);
+    my $dst = $repo->_destination_uri($SITE);
     isa_ok($dst, 'URI::file');
     isa_ok($dst, 'URI');
-    like($dst, qr|file:///var/svn/repos/websites/www.ufl.edu/tags/\d{12}|, 'destination URI matches');
+    like($dst, qr|$REPO_URI/www.ufl.edu/tags/\d{12}|, 'destination URI matches');
+
+    my $client = SVN::Client->new;
+    my $current_tags = $client->ls("$REPO_URI/www.ufl.edu/tags", 'HEAD', 0);
+    is(scalar keys %$current_tags, 2, 'tags directory currently contains two tags');
+
+    $repo->deploy_site($SITE, 13, "Deploying " . $SITE->uri . " on behalf of dwc");
+
+    my $new_tags = $client->ls("$REPO_URI/www.ufl.edu/tags", 'HEAD', 0);
+    is(scalar keys %$new_tags, 3, 'tags directory currently now contains three tags');
+
+    my $newest_tag = (sort keys %$new_tags)[2];
+
+    my $log;
+    $client->log([ "$REPO_URI/www.ufl.edu/tags/$newest_tag" ], 14, 14, 0, 0, sub { $log = $_[4] });
+    is($log, 'Deploying http://www.ufl.edu/ on behalf of dwc', 'log message is correct');
 }
 
 # https repository URI
@@ -48,12 +79,12 @@ my $site = UFL::WebAdmin::SiteDeploy::Site->new(uri => 'http://www.ufl.edu/');
 
     isa_ok($repo->client, 'SVN::Client');
 
-    my $src = $repo->_source_uri($site);
+    my $src = $repo->_source_uri($SITE);
     isa_ok($src, 'URI::https');
     isa_ok($src, 'URI');
     is($src, 'https://svn.webadmin.ufl.edu/repos/websites/www.ufl.edu/trunk', 'source URI matches');
 
-    my $dst = $repo->_destination_uri($site);
+    my $dst = $repo->_destination_uri($SITE);
     isa_ok($dst, 'URI::https');
     isa_ok($dst, 'URI');
     like($dst, qr|https://svn.webadmin.ufl.edu/repos/websites/www.ufl.edu/tags/\d{12}|, 'destination URI matches');
