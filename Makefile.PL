@@ -40,8 +40,10 @@ requires_external_bin 'svnadmin';
 
 build_requires 'FindBin';
 build_requires 'Path::Class';
+build_requires 'SVN::Client';
 build_requires 'Test::Log4perl';
 build_requires 'Test::More';
+build_requires 'URI::file';
 
 install_script glob('script/*.pl');
 
