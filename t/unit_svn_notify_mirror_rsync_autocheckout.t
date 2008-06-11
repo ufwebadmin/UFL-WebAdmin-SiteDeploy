@@ -2,12 +2,12 @@
 
 use strict;
 use warnings;
-use File::Path ();
-use File::Spec;
 use FindBin;
 use Log::Log4perl;
+use Path::Class;
 use Test::Log4perl;
 use Test::More;
+use UFL::WebAdmin::SiteDeploy::TestRepository;
 
 BEGIN {
     plan skip_all => "set TEST_AUTHOR to run these tests"
@@ -17,21 +17,25 @@ BEGIN {
     use_ok('SVN::Notify::Mirror::Rsync::AutoCheckout');
 }
 
-my $REPO_DIR     = File::Spec->join($FindBin::Bin, 'data', 'repo');
-my $SCRATCH_DIR  = File::Spec->join($FindBin::Bin, 'var');
-my $CHECKOUT_DIR = File::Spec->join($SCRATCH_DIR, 'checkout');
-my $RSYNC_DIR    = File::Spec->join($SCRATCH_DIR, 'rsync');
+my $TEST_REPO = UFL::WebAdmin::SiteDeploy::TestRepository->new(
+    base      => $FindBin::Bin,
+    dump_file => file($FindBin::Bin, 'data', 'repo.dump'),
+);
+
+my $REPO_DIR     = $TEST_REPO->repository_dir;
+my $CHECKOUT_DIR = $TEST_REPO->checkout_dir;
+my $RSYNC_DIR    = $TEST_REPO->scratch_dir->subdir('rsync');
 diag("repo_dir = [$REPO_DIR], checkout_dir = [$CHECKOUT_DIR], rsync_dir = [$RSYNC_DIR]");
 
 my $DEFAULT_RSYNC_HOSTNAME = qx{hostname -f};
 chomp $DEFAULT_RSYNC_HOSTNAME;
 my %NOTIFIER_ARGS = (
-    repos_path   => $REPO_DIR,
-    to           => $CHECKOUT_DIR,
-    revision     => 15,
+    repos_path   => $REPO_DIR->stringify,
+    to           => $CHECKOUT_DIR->stringify,
+    revision     => 12,
     rsync_ssh    => 1,
     rsync_host   => $ENV{TEST_RSYNC_HOSTNAME} || $DEFAULT_RSYNC_HOSTNAME,
-    rsync_dest   => $RSYNC_DIR,
+    rsync_dest   => $RSYNC_DIR->stringify,
     rsync_args   => { recursive => 1 },
     log_category => 'unit_svn_notify_mirror_rsync_autocheckout',
 );
@@ -43,18 +47,18 @@ Log::Log4perl->init(\qq[
     log4perl.appender.Screen.layout.ConversionPattern = %c %p %l %m%n
 ]);
 
-# Fresh checkout
-File::Path::rmtree($SCRATCH_DIR) if -d $SCRATCH_DIR;
+$TEST_REPO->init;
 ok(! -d $CHECKOUT_DIR, 'checkout directory does not exist');
 
+# Fresh checkout
 run_tests(
     $CHECKOUT_DIR,
     $RSYNC_DIR,
     [ 'test.txt' ],
-    "file://$REPO_DIR/trunk/htdocs",
+    "file://$REPO_DIR/www.ufl.edu/trunk/htdocs",
     {
         %NOTIFIER_ARGS,
-        repos_uri  => "file://$REPO_DIR/trunk/htdocs",
+        repos_uri  => "file://$REPO_DIR/www.ufl.edu/trunk/htdocs",
     },
 );
 
@@ -65,15 +69,15 @@ run_tests(
     $CHECKOUT_DIR,
     $RSYNC_DIR,
     [ 'test2.txt' ],
-    "file://$REPO_DIR/branches/test/htdocs",
+    "file://$REPO_DIR/www.ufl.edu/branches/test/htdocs",
     {
         %NOTIFIER_ARGS,
-        repos_uri  => "file://$REPO_DIR/branches/test/htdocs",
+        repos_uri  => "file://$REPO_DIR/www.ufl.edu/branches/test/htdocs",
     },
 );
 
 # Using tags with a suffix
-File::Path::rmtree($SCRATCH_DIR) if -d $SCRATCH_DIR;
+$TEST_REPO->init;
 ok(! -d $CHECKOUT_DIR, 'checkout directory does not exist');
 
 # Initial checkout
@@ -81,12 +85,12 @@ run_tests(
     $CHECKOUT_DIR,
     $RSYNC_DIR,
     [ 'test.txt' ],
-    "file://$REPO_DIR/tags/200805291436/htdocs",
+    "file://$REPO_DIR/www.ufl.edu/tags/200806111444/htdocs",
     {
         %NOTIFIER_ARGS,
-        revision    => 9,
+        revision    => 4,
         tag_pattern => qr|tags/\d{12}|,
-        repos_uri   => "file://$REPO_DIR/tags/200805291436/htdocs",
+        repos_uri   => "file://$REPO_DIR/www.ufl.edu/tags/200806111444/htdocs",
     },
 );
 
@@ -97,11 +101,12 @@ run_tests(
     $CHECKOUT_DIR,
     $RSYNC_DIR,
     [ 'index.html' ],
-    "file://$REPO_DIR/tags/200805291452/htdocs",
+    "file://$REPO_DIR/www.ufl.edu/tags/200806111445/htdocs",
     {
         %NOTIFIER_ARGS,
+        revision    => 6,
         tag_pattern => qr|tags/\d{12}|,
-        repos_uri   => "file://$REPO_DIR/tags/200805291436/htdocs",
+        repos_uri   => "file://$REPO_DIR/www.ufl.edu/tags/200806111444/htdocs",
     },
 );
 
@@ -134,7 +139,7 @@ sub run_tests {
     ok(-d $rsync_dir, 'rsync directory exists');
 
     for my $file (@$files) {
-        ok(-f File::Spec->join($checkout_dir, $file), "checkout directory contains checkout file $file");
-        ok(-f File::Spec->join($rsync_dir, $file), "rsync directory contains checkout file $file");
+        ok(-f $checkout_dir->file($file), "checkout directory contains checkout file $file");
+        ok(-f $rsync_dir->file($file), "rsync directory contains checkout file $file");
     }
 }

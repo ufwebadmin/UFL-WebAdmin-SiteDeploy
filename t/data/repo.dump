@@ -1,0 +1,486 @@
+SVN-fs-dump-format-version: 2
+
+UUID: edc0e7ed-3f9a-4f6f-9771-23dde988ba46
+
+Revision-number: 0
+Prop-content-length: 56
+Content-length: 56
+
+K 8
+svn:date
+V 27
+2008-06-11T18:43:07.723462Z
+PROPS-END
+
+Revision-number: 1
+Prop-content-length: 126
+Content-length: 126
+
+K 7
+svn:log
+V 28
+Initial repository structure
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T18:43:22.954638Z
+PROPS-END
+
+Node-path: www.ufl.edu
+Node-kind: dir
+Node-action: add
+Prop-content-length: 10
+Content-length: 10
+
+PROPS-END
+
+
+Node-path: www.ufl.edu/branches
+Node-kind: dir
+Node-action: add
+Prop-content-length: 10
+Content-length: 10
+
+PROPS-END
+
+
+Node-path: www.ufl.edu/tags
+Node-kind: dir
+Node-action: add
+Prop-content-length: 10
+Content-length: 10
+
+PROPS-END
+
+
+Node-path: www.ufl.edu/trunk
+Node-kind: dir
+Node-action: add
+Prop-content-length: 10
+Content-length: 10
+
+PROPS-END
+
+
+Revision-number: 2
+Prop-content-length: 125
+Content-length: 125
+
+K 7
+svn:log
+V 27
+Directory for Web documents
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T18:43:36.770568Z
+PROPS-END
+
+Node-path: www.ufl.edu/trunk/htdocs
+Node-kind: dir
+Node-action: add
+Prop-content-length: 10
+Content-length: 10
+
+PROPS-END
+
+
+Revision-number: 3
+Prop-content-length: 108
+Content-length: 108
+
+K 7
+svn:log
+V 10
+Add a file
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T18:43:48.006897Z
+PROPS-END
+
+Node-path: www.ufl.edu/trunk/htdocs/test.txt
+Node-kind: file
+Node-action: add
+Prop-content-length: 10
+Text-content-length: 0
+Text-content-md5: d41d8cd98f00b204e9800998ecf8427e
+Content-length: 10
+
+PROPS-END
+
+
+Revision-number: 4
+Prop-content-length: 109
+Content-length: 109
+
+K 7
+svn:log
+V 11
+Initial tag
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T18:44:05.800626Z
+PROPS-END
+
+Node-path: www.ufl.edu/tags/200806111444
+Node-kind: dir
+Node-action: add
+Node-copyfrom-rev: 1
+Node-copyfrom-path: www.ufl.edu/trunk
+
+
+Node-path: www.ufl.edu/tags/200806111444/htdocs
+Node-kind: dir
+Node-action: add
+Node-copyfrom-rev: 2
+Node-copyfrom-path: www.ufl.edu/trunk/htdocs
+
+
+Node-path: www.ufl.edu/tags/200806111444/htdocs/test.txt
+Node-kind: file
+Node-action: add
+Node-copyfrom-rev: 3
+Node-copyfrom-path: www.ufl.edu/trunk/htdocs/test.txt
+
+
+Revision-number: 5
+Prop-content-length: 114
+Content-length: 114
+
+K 7
+svn:log
+V 16
+Add another file
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T18:44:16.518466Z
+PROPS-END
+
+Node-path: www.ufl.edu/trunk/htdocs/index.html
+Node-kind: file
+Node-action: add
+Prop-content-length: 10
+Text-content-length: 0
+Text-content-md5: d41d8cd98f00b204e9800998ecf8427e
+Content-length: 10
+
+PROPS-END
+
+
+Revision-number: 6
+Prop-content-length: 109
+Content-length: 109
+
+K 7
+svn:log
+V 11
+Another tag
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T18:44:30.776538Z
+PROPS-END
+
+Node-path: www.ufl.edu/tags/200806111445
+Node-kind: dir
+Node-action: add
+Node-copyfrom-rev: 1
+Node-copyfrom-path: www.ufl.edu/trunk
+
+
+Node-path: www.ufl.edu/tags/200806111445/htdocs
+Node-kind: dir
+Node-action: add
+Node-copyfrom-rev: 2
+Node-copyfrom-path: www.ufl.edu/trunk/htdocs
+
+
+Node-path: www.ufl.edu/tags/200806111445/htdocs/index.html
+Node-kind: file
+Node-action: add
+Node-copyfrom-rev: 5
+Node-copyfrom-path: www.ufl.edu/trunk/htdocs/index.html
+
+
+Node-path: www.ufl.edu/tags/200806111445/htdocs/test.txt
+Node-kind: file
+Node-action: add
+Node-copyfrom-rev: 3
+Node-copyfrom-path: www.ufl.edu/trunk/htdocs/test.txt
+
+
+Revision-number: 7
+Prop-content-length: 113
+Content-length: 113
+
+K 7
+svn:log
+V 15
+Create a branch
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T18:44:43.001108Z
+PROPS-END
+
+Node-path: www.ufl.edu/branches/test
+Node-kind: dir
+Node-action: add
+Node-copyfrom-rev: 1
+Node-copyfrom-path: www.ufl.edu/trunk
+
+
+Node-path: www.ufl.edu/branches/test/htdocs
+Node-kind: dir
+Node-action: add
+Node-copyfrom-rev: 2
+Node-copyfrom-path: www.ufl.edu/trunk/htdocs
+
+
+Node-path: www.ufl.edu/branches/test/htdocs/index.html
+Node-kind: file
+Node-action: add
+Node-copyfrom-rev: 5
+Node-copyfrom-path: www.ufl.edu/trunk/htdocs/index.html
+
+
+Node-path: www.ufl.edu/branches/test/htdocs/test.txt
+Node-kind: file
+Node-action: add
+Node-copyfrom-rev: 3
+Node-copyfrom-path: www.ufl.edu/trunk/htdocs/test.txt
+
+
+Revision-number: 8
+Prop-content-length: 125
+Content-length: 125
+
+K 7
+svn:log
+V 27
+Rename a file on the branch
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T18:44:55.928498Z
+PROPS-END
+
+Node-path: www.ufl.edu/branches/test/htdocs/test2.txt
+Node-kind: file
+Node-action: add
+Node-copyfrom-rev: 7
+Node-copyfrom-path: www.ufl.edu/branches/test/htdocs/test.txt
+
+
+Node-path: www.ufl.edu/branches/test/htdocs/test.txt
+Node-action: delete
+
+
+Revision-number: 9
+Prop-content-length: 126
+Content-length: 126
+
+K 7
+svn:log
+V 28
+Initial repository structure
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T18:45:18.076990Z
+PROPS-END
+
+Node-path: www.webadmin.ufl.edu
+Node-kind: dir
+Node-action: add
+Prop-content-length: 10
+Content-length: 10
+
+PROPS-END
+
+
+Node-path: www.webadmin.ufl.edu/branches
+Node-kind: dir
+Node-action: add
+Prop-content-length: 10
+Content-length: 10
+
+PROPS-END
+
+
+Node-path: www.webadmin.ufl.edu/tags
+Node-kind: dir
+Node-action: add
+Prop-content-length: 10
+Content-length: 10
+
+PROPS-END
+
+
+Node-path: www.webadmin.ufl.edu/trunk
+Node-kind: dir
+Node-action: add
+Prop-content-length: 10
+Content-length: 10
+
+PROPS-END
+
+
+Revision-number: 10
+Prop-content-length: 111
+Content-length: 111
+
+K 7
+svn:log
+V 13
+Web directory
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T18:45:38.108615Z
+PROPS-END
+
+Node-path: www.webadmin.ufl.edu/trunk/htdocs
+Node-kind: dir
+Node-action: add
+Prop-content-length: 10
+Content-length: 10
+
+PROPS-END
+
+
+Revision-number: 11
+Prop-content-length: 108
+Content-length: 108
+
+K 7
+svn:log
+V 10
+Add a file
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T18:45:50.605733Z
+PROPS-END
+
+Node-path: www.webadmin.ufl.edu/trunk/htdocs/index.html
+Node-kind: file
+Node-action: add
+Prop-content-length: 10
+Text-content-length: 0
+Text-content-md5: d41d8cd98f00b204e9800998ecf8427e
+Content-length: 10
+
+PROPS-END
+
+
+Revision-number: 12
+Prop-content-length: 126
+Content-length: 126
+
+K 7
+svn:log
+V 28
+Add SVN::Notify::Config file
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T18:59:43.355235Z
+PROPS-END
+
+Node-path: svnnotify.yml
+Node-kind: file
+Node-action: add
+Prop-content-length: 10
+Text-content-length: 134
+Text-content-md5: 6644d65c0cab46c53a9638293f37b281
+Content-length: 144
+
+PROPS-END
+# Both paths are a no-op because we can't set a runtime path
+www.ufl.edu/trunk:
+  handler: Mirror
+www.ufl.edu/tags:
+  handler: Mirror
+
+
+Revision-number: 13
+Prop-content-length: 112
+Content-length: 112
+
+K 7
+svn:log
+V 14
+Add a new file
+K 10
+svn:author
+V 3
+dwc
+K 8
+svn:date
+V 27
+2008-06-11T19:48:49.085837Z
+PROPS-END
+
+Node-path: www.webadmin.ufl.edu/trunk/htdocs/foo.html
+Node-kind: file
+Node-action: add
+Prop-content-length: 10
+Text-content-length: 0
+Text-content-md5: d41d8cd98f00b204e9800998ecf8427e
+Content-length: 10
+
+PROPS-END
+
+

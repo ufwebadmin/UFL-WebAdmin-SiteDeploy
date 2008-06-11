@@ -14,6 +14,15 @@ coerce 'Path::Class::Dir'
         => via { Path::Class::Dir->new($_) };
 
 
+subtype 'Path::Class::File'
+    => as 'Object'
+    => where { $_->isa('Path::Class::File') };
+
+coerce 'Path::Class::File'
+    => from 'Str'
+        => via { Path::Class::File->new($_) };
+
+
 subtype 'URI'
     => as 'Object'
     => where { $_->isa('URI') };

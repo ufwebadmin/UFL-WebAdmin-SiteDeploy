@@ -2,19 +2,24 @@
 
 use strict;
 use warnings;
-use File::Path;
-use File::Spec;
 use FindBin;
-use Test::More tests => 4 + 2*2 + 2 + 4;
+use Path::Class;
+use Test::More tests => 4 + 2*1 + 2 + 4;
+use UFL::WebAdmin::SiteDeploy::TestRepository;
 
 BEGIN {
     use_ok('UFL::WebAdmin::SiteDeploy');
 }
 
-my $DATA_DIR    = File::Spec->join($FindBin::Bin, 'data');
-my $REPO_DIR    = File::Spec->join($DATA_DIR, 'repo');
-my $SCRATCH_DIR = File::Spec->join($FindBin::Bin, 'var');
-my $MIRROR_DIR  = File::Spec->join($SCRATCH_DIR, 'mirror');
+my $TEST_REPO = UFL::WebAdmin::SiteDeploy::TestRepository->new(
+    base      => $FindBin::Bin,
+    dump_file => file($FindBin::Bin, 'data', 'repo.dump'),
+);
+
+$TEST_REPO->init;
+
+my $REPO_DIR   = $TEST_REPO->repository_dir;
+my $MIRROR_DIR = $TEST_REPO->scratch_dir->subdir('mirror');
 diag("repo_dir = [$REPO_DIR], mirror_dir = [$MIRROR_DIR]");
 
 my $app = UFL::WebAdmin::SiteDeploy->new;
@@ -38,10 +43,10 @@ is_deeply(
 
 # Test loading a no-op config from the repository
 {
-    create_checkout('trunk/htdocs', 13);
-    ok(! -f File::Spec->join($MIRROR_DIR, 'index.html'), 'mirror directory does not contain checkout file index.html');
+    create_checkout('www.webadmin.ufl.edu/trunk/htdocs', 12);
+    ok(! -f $MIRROR_DIR->file('foo.html'), 'mirror directory does not contain checkout file foo.html');
 
-    local @ARGV = ('deploy', '--path', $REPO_DIR, '--revision', 17);
+    local @ARGV = ('deploy', '--path', $REPO_DIR->stringify, '--revision', 13);
 
     eval { $app->run };
     diag($@) if $@;
@@ -52,18 +57,18 @@ is_deeply(
 {
     no warnings 'redefine';
 
-    create_checkout('trunk/htdocs', 13);
-    ok(! -f File::Spec->join($MIRROR_DIR, 'index.html'), 'mirror directory does not contain checkout file index.html');
+    create_checkout('www.webadmin.ufl.edu/trunk/htdocs', 12);
+    ok(! -f $MIRROR_DIR->file('foo.html'), 'mirror directory does not contain checkout file foo.html');
 
-    local @ARGV = ('deploy', '--path', $REPO_DIR, '--revision', 14);
+    local @ARGV = ('deploy', '--path', $REPO_DIR->stringify, '--revision', 13);
 
     # Override _load_config to provide a mirror path that we can throw
     # out at the end of the tests
     local *UFL::WebAdmin::SiteDeploy::Command::deploy::_load_svn_notify_config = sub {
         return {
-            'trunk/htdocs' => {
+            'www.webadmin.ufl.edu/trunk/htdocs' => {
                 handler => 'Mirror',
-                to      => $MIRROR_DIR,
+                to      => $MIRROR_DIR->stringify,
             },
         };
     };
@@ -72,17 +77,14 @@ is_deeply(
     diag($@) if $@;
     ok(! $@, 'successfully ran a deploy command');
     ok(-d $MIRROR_DIR, 'mirror directory created');
-    ok(-f File::Spec->join($MIRROR_DIR, 'index.html'), 'mirror directory contains checkout file index.html');
+    ok(-f $MIRROR_DIR->file('foo.html'), 'mirror directory contains checkout file foo.html');
 }
 
 
 sub create_checkout {
     my ($path, $revision) = @_;
 
-    File::Path::rmtree($SCRATCH_DIR) if -d $SCRATCH_DIR;
-    ok(! -d $MIRROR_DIR, 'mirror directory does not exist');
-
-    my $repo_path = File::Spec->join($REPO_DIR, $path);
+    my $repo_path = $REPO_DIR->subdir($path);
 
     # Close STDOUT avoid confusion in Test::Harness with the svn
     # output from SVN::Notify::Mirror
