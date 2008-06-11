@@ -38,6 +38,16 @@ the repository. For example:
 
 =head1 METHODS
 
+=head2 entries
+
+List the entries in the repository.
+
+=cut
+
+sub entries {
+    die "abstract method";
+}
+
 =head2 deploy_site
 
 Deploy the specified L<UFL::WebAdmin::SiteDeploy::Site>.

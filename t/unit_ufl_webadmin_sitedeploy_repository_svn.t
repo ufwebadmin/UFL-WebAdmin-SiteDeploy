@@ -5,7 +5,7 @@ use warnings;
 use FindBin;
 use Path::Class;
 use SVN::Client;
-use Test::More tests => 28;
+use Test::More tests => 29;
 use UFL::WebAdmin::SiteDeploy::Site;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
 use URI::file;
@@ -39,6 +39,9 @@ my $SITE = UFL::WebAdmin::SiteDeploy::Site->new(uri => 'http://www.ufl.edu/');
     is($repo->uri->path, $REPO_DIR, 'path translated from URI is correct');
 
     isa_ok($repo->client, 'SVN::Client');
+
+    my $entries = $repo->entries;
+    is(scalar keys %$entries, 3, 'repository contains three items in the root directory');
 
     my $src = $repo->_source_uri($SITE);
     isa_ok($src, 'URI::file');

@@ -27,6 +27,23 @@ sites, using Subversion as the revision control system.
 
 =head1 METHODS
 
+=head2 entries
+
+Return the contents of the repository as of C<HEAD>.
+
+    my $entries = $repo->entries;
+    print $entries->{www.ufl.edu}->created_rev;
+
+=cut
+
+sub entries {
+    my ($self) = @_;
+
+    my $entries = $self->client->ls($self->uri, 'HEAD', 0);
+
+    return $entries;
+}
+
 =head2 deploy_site
 
 Deploy the specified Web site from the repository. In Subversion

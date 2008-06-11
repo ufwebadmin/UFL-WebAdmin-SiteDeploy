@@ -9,6 +9,11 @@ has 'uri' => (
     coerce => 1,
 );
 
+has 'repository' => (
+    is => 'rw',
+    isa => 'UFL::WebAdmin::SiteDeploy::Repository',
+);
+
 =head1 NAME
 
 UFL::WebAdmin::SiteDeploy::Site - A Web site
@@ -21,6 +26,20 @@ UFL::WebAdmin::SiteDeploy::Site - A Web site
 
 This is a representation of a Web site managed by
 L<UFL::WebAdmin::SiteDeploy>.
+
+=head1 METHODS
+
+=head2 deploy
+
+Deploy this site from the repository.
+
+=cut
+
+sub deploy {
+    my ($self, $revision, $message) = @_;
+
+    $self->repository->deploy_site($self, $revision, $message);
+}
 
 =head1 AUTHOR
 

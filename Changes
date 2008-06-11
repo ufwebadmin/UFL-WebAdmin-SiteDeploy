@@ -1,5 +1,10 @@
 Revision history for UFL-WebAdmin-SiteDeploy
 
+0.06
+        - Refactor deployment code
+        - Add deploy method to UFL::WebAdmin::SiteDeploy::Site
+        - Add entries method to UFL::WebAdmin::SiteDeploy::Repository
+
 0.05  Wed Jun 11 17:17:03 EDT 2008
         - Refactor tests
         - Add deploy_site method to
