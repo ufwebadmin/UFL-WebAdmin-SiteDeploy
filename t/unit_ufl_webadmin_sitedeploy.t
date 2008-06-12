@@ -11,11 +11,7 @@ BEGIN {
     use_ok('UFL::WebAdmin::SiteDeploy');
 }
 
-my $TEST_REPO = UFL::WebAdmin::SiteDeploy::TestRepository->new(
-    base      => $FindBin::Bin,
-    dump_file => file($FindBin::Bin, 'data', 'repo.dump'),
-);
-
+my $TEST_REPO = UFL::WebAdmin::SiteDeploy::TestRepository->new;
 $TEST_REPO->init;
 
 my $REPO_DIR   = $TEST_REPO->repository_dir;

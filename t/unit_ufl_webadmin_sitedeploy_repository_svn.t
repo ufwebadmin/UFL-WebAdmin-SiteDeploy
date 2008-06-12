@@ -8,21 +8,17 @@ use SVN::Client;
 use Test::More tests => 29;
 use UFL::WebAdmin::SiteDeploy::Site;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
-use URI::file;
 
 BEGIN {
     use_ok('UFL::WebAdmin::SiteDeploy::Repository::SVN');
 }
 
-my $TEST_REPO = UFL::WebAdmin::SiteDeploy::TestRepository->new(
-    base      => $FindBin::Bin,
-    dump_file => file($FindBin::Bin, 'data', 'repo.dump'),
-);
+my $TEST_REPO = UFL::WebAdmin::SiteDeploy::TestRepository->new;
 
 $TEST_REPO->init;
 
 my $REPO_DIR = $TEST_REPO->repository_dir;
-my $REPO_URI = URI::file->new($REPO_DIR);
+my $REPO_URI = $TEST_REPO->repository_uri;
 diag("repo_dir = [$REPO_DIR], repo_uri = [$REPO_URI]");
 
 my $SITE = UFL::WebAdmin::SiteDeploy::Site->new(uri => 'http://www.ufl.edu/');

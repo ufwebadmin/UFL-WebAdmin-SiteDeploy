@@ -1,13 +1,18 @@
 package UFL::WebAdmin::SiteDeploy::TestRepository;
 
 use Moose;
+use FindBin;
+use Path::Class::Dir;
+use Path::Class::File;
 use UFL::WebAdmin::SiteDeploy::Types;
+use URI::file;
 
 has 'base' => (
     is => 'rw',
     isa => 'Path::Class::Dir',
     coerce => 1,
     required => 1,
+    default => sub { Path::Class::Dir->new($FindBin::Bin) },
 );
 
 has 'dump_file' => (
@@ -15,6 +20,7 @@ has 'dump_file' => (
     isa => 'Path::Class::File',
     coerce => 1,
     required => 1,
+    default => sub { Path::Class::File->new($FindBin::Bin, 'data', 'repo.dump') },
 );
 
 =head1 NAME
@@ -62,6 +68,20 @@ Return the L<Path::Class::Dir> to our scratch repository directory.
 
 sub repository_dir {
     return shift->scratch_dir->subdir('repository');
+}
+
+=head2 repository_uri
+
+Return the L<URI> to our scratch repository directory.
+
+=cut
+
+sub repository_uri {
+    my ($self) = @_;
+
+    my $uri = URI::file->new($self->repository_dir);
+
+    return $uri;
 }
 
 =head2 checkout_dir

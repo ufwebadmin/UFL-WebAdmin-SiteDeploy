@@ -8,7 +8,6 @@ use Path::Class;
 use Test::Log4perl;
 use Test::More;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
-use URI::file;
 
 BEGIN {
     plan skip_all => "set TEST_AUTHOR to run these tests"
@@ -18,13 +17,10 @@ BEGIN {
     use_ok('SVN::Notify::Mirror::Rsync::AutoCheckout');
 }
 
-my $TEST_REPO = UFL::WebAdmin::SiteDeploy::TestRepository->new(
-    base      => $FindBin::Bin,
-    dump_file => file($FindBin::Bin, 'data', 'repo.dump'),
-);
+my $TEST_REPO = UFL::WebAdmin::SiteDeploy::TestRepository->new;
 
 my $REPO_DIR     = $TEST_REPO->repository_dir;
-my $REPO_URI     = URI::file->new($REPO_DIR);
+my $REPO_URI     = $TEST_REPO->repository_uri;
 my $CHECKOUT_DIR = $TEST_REPO->checkout_dir;
 my $RSYNC_DIR    = $TEST_REPO->scratch_dir->subdir('rsync');
 diag("repo_dir = [$REPO_DIR], repo_uri = [$REPO_URI], checkout_dir = [$CHECKOUT_DIR], rsync_dir = [$RSYNC_DIR]");
