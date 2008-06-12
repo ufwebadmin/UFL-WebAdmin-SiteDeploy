@@ -6,12 +6,14 @@ use UFL::WebAdmin::SiteDeploy::Types;
 has 'uri' => (
     is => 'rw',
     isa => 'URI',
+    required => 1,
     coerce => 1,
 );
 
 has 'repository' => (
     is => 'rw',
     isa => 'UFL::WebAdmin::SiteDeploy::Repository',
+    required => 1,
 );
 
 =head1 NAME

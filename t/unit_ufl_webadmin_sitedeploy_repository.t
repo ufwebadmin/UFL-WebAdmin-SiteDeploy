@@ -9,11 +9,13 @@ BEGIN {
     use_ok('UFL::WebAdmin::SiteDeploy::Repository');
 }
 
-my $SITE = UFL::WebAdmin::SiteDeploy::Site->new(uri => 'http://www.ufl.edu/');
-
 # file repository URI
 {
     my $repo = UFL::WebAdmin::SiteDeploy::Repository->new(uri => 'file:///var/svn/repos/websites');
+    my $site = UFL::WebAdmin::SiteDeploy::Site->new(
+        uri => 'http://www.ufl.edu/',
+        repository => $repo,
+    );
 
     isa_ok($repo, 'UFL::WebAdmin::SiteDeploy::Repository');
 
@@ -24,13 +26,17 @@ my $SITE = UFL::WebAdmin::SiteDeploy::Site->new(uri => 'http://www.ufl.edu/');
     eval { $repo->entries };
     like($@, qr/^abstract method/, 'calling entries fails because it is an abstract method');
 
-    eval { $repo->deploy_site($SITE, 1, "Deploying on behalf of dwc") };
+    eval { $repo->deploy_site($site, 1, "Deploying on behalf of dwc") };
     like($@, qr/^abstract method/, 'calling deploy_site fails because it is an abstract method');
 }
 
 # https repository URI
 {
     my $repo = UFL::WebAdmin::SiteDeploy::Repository->new(uri => 'https://svn.webadmin.ufl.edu/repos/websites/');
+    my $site = UFL::WebAdmin::SiteDeploy::Site->new(
+        uri => 'http://www.ufl.edu/',
+        repository => $repo,
+    );
 
     isa_ok($repo, 'UFL::WebAdmin::SiteDeploy::Repository');
 
@@ -41,6 +47,6 @@ my $SITE = UFL::WebAdmin::SiteDeploy::Site->new(uri => 'http://www.ufl.edu/');
     eval { $repo->entries };
     like($@, qr/^abstract method/, 'calling entries fails because it is an abstract method');
 
-    eval { $repo->deploy_site($SITE, 1, "Deploying on behalf of dwc") };
+    eval { $repo->deploy_site($site, 1, "Deploying on behalf of dwc") };
     like($@, qr/^abstract method/, 'calling deploy_site fails because it is an abstract method');
 }

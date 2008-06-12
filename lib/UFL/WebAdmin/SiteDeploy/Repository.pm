@@ -6,6 +6,7 @@ use UFL::WebAdmin::SiteDeploy::Types;
 has 'uri' => (
     is => 'rw',
     isa => 'URI',
+    required => 1,
     coerce => 1,
 );
 
