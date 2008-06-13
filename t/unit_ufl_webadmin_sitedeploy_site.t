@@ -2,8 +2,6 @@
 
 use strict;
 use warnings;
-use FindBin;
-use Path::Class;
 use Test::More tests => 17;
 use UFL::WebAdmin::SiteDeploy::Repository::SVN;
 use UFL::WebAdmin::SiteDeploy::TestRepository;

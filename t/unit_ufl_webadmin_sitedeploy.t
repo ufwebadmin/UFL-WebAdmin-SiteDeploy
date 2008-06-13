@@ -2,8 +2,6 @@
 
 use strict;
 use warnings;
-use FindBin;
-use Path::Class;
 use Test::More tests => 4 + 2*1 + 2 + 4;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
 

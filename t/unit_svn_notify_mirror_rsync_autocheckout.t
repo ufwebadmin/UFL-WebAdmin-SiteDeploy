@@ -2,9 +2,7 @@
 
 use strict;
 use warnings;
-use FindBin;
 use Log::Log4perl;
-use Path::Class;
 use Test::Log4perl;
 use Test::More;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
