@@ -42,19 +42,6 @@ sub identifier {
     return shift->uri->host;
 }
 
-=head2 test_entries
-
-Return the contents of the L<UFL::WebAdmin::SiteDeploy::Repository>
-corresponding to commits to the test version of this site.
-
-=cut
-
-sub test_entries {
-    my ($self, $revision) = @_;
-
-    return $self->repository->test_entries($self, $revision);
-}
-
 =head2 prod_entries
 
 Return the contents of the L<UFL::WebAdmin::SiteDeploy::Repository>

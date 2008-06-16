@@ -49,17 +49,6 @@ sub entries {
     die "abstract method";
 }
 
-=head2 test_entries
-
-List the entries in the repository corresponding to the test version
-of the specified site.
-
-=cut
-
-sub test_entries {
-    die "abstract method";
-}
-
 =head2 prod_entries
 
 List the entries in the repository corresponding to the production

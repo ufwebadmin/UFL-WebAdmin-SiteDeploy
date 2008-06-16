@@ -52,19 +52,6 @@ sub entries {
     return $entries;
 }
 
-=head2 test_entries
-
-Return the contents of the repository for the specified
-L<UFL::WebAdmin::SiteDeploy::Site> corresponding to actions in test.
-
-=cut
-
-sub test_entries {
-    my ($self, $site, $revision) = @_;
-
-    return $self->entries([ $site->identifier, 'trunk' ], $revision);
-}
-
 =head2 prod_entries
 
 Return the contents of the repository for the specified
