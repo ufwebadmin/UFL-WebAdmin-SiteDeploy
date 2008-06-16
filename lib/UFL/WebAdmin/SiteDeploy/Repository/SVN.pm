@@ -62,7 +62,7 @@ L<UFL::WebAdmin::SiteDeploy::Site> corresponding to actions in test.
 sub test_entries {
     my ($self, $site, $revision) = @_;
 
-    return $self->entries([ $site->uri->host, 'trunk' ], $revision);
+    return $self->entries([ $site->identifier, 'trunk' ], $revision);
 }
 
 =head2 prod_entries
@@ -76,7 +76,7 @@ production.
 sub prod_entries {
     my ($self, $site, $revision) = @_;
 
-    return $self->entries([ $site->uri->host, 'tags' ], $revision);
+    return $self->entries([ $site->identifier, 'tags' ], $revision);
 }
 
 =head2 deploy_site
