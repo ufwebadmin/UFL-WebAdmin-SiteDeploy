@@ -31,6 +31,43 @@ L<UFL::WebAdmin::SiteDeploy>.
 
 =head1 METHODS
 
+=head2 identifier
+
+Return the string that identifies this site in its associated
+L<UFL::WebAdmin::SiteDeploy::Repository>.
+
+=cut
+
+sub identifier {
+    return shift->uri->host;
+}
+
+=head2 test_entries
+
+Return the contents of the L<UFL::WebAdmin::SiteDeploy::Repository>
+corresponding to commits to the test version of this site.
+
+=cut
+
+sub test_entries {
+    my ($self, $revision) = @_;
+
+    return $self->repository->test_entries($self, $revision);
+}
+
+=head2 prod_entries
+
+Return the contents of the L<UFL::WebAdmin::SiteDeploy::Repository>
+corresponding to commits to the production version of this site.
+
+=cut
+
+sub prod_entries {
+    my ($self, $revision) = @_;
+
+    return $self->repository->prod_entries($self, $revision);
+}
+
 =head2 deploy
 
 Deploy this site from the repository.

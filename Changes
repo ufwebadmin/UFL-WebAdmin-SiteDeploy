@@ -5,6 +5,7 @@ Revision history for UFL-WebAdmin-SiteDeploy
           UFL::WebAdmin::SiteDeploy::TestRepository
         - Declare required attributes as such to make initialization
           errors obvious
+        - Add test_entries and prod_entries methods
 
 0.06  Thu Jun 12 14:06:44 EDT 2008
         - Refactor deployment code

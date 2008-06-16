@@ -36,8 +36,8 @@ diag("repo_dir = [$REPO_DIR], repo_uri = [$REPO_URI]");
 
     isa_ok($repo->client, 'SVN::Client');
 
-    my $entries = $repo->entries;
-    is(scalar keys %$entries, 3, 'repository contains three items in the root directory');
+    my $root_entries = $repo->entries;
+    is(scalar keys %$root_entries, 3, 'repository contains three items in the root directory');
 
     my $src = $repo->_source_uri($site);
     isa_ok($src, 'URI::file');
@@ -49,17 +49,17 @@ diag("repo_dir = [$REPO_DIR], repo_uri = [$REPO_URI]");
     isa_ok($dst, 'URI');
     like($dst, qr|$REPO_URI/www.ufl.edu/tags/\d{12}|, 'destination URI matches');
 
-    my $client = SVN::Client->new;
-    my $current_tags = $client->ls("$REPO_URI/www.ufl.edu/tags", 'HEAD', 0);
-    is(scalar keys %$current_tags, 2, 'tags directory currently contains two tags');
+    my $current_tags = $repo->entries([ qw/www.ufl.edu tags/ ], 13);
+    is(scalar keys %$current_tags, 2, 'tags directory before deploy contains two tags');
 
     $repo->deploy_site($site, 13, "Deploying " . $site->uri . " on behalf of dwc");
 
-    my $new_tags = $client->ls("$REPO_URI/www.ufl.edu/tags", 'HEAD', 0);
-    is(scalar keys %$new_tags, 3, 'tags directory currently now contains three tags');
+    my $new_tags = $repo->prod_entries($site);
+    is(scalar keys %$new_tags, 3, 'tags directory after deploy contains three tags');
 
     my $newest_tag = (sort keys %$new_tags)[2];
 
+    my $client = SVN::Client->new;
     my $log;
     $client->log([ "$REPO_URI/www.ufl.edu/tags/$newest_tag" ], 14, 14, 0, 0, sub { $log = $_[4] });
     is($log, 'Deploying http://www.ufl.edu/ on behalf of dwc', 'log message is correct');

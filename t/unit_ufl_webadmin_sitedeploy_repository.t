@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 13;
+use Test::More tests => 17;
 use UFL::WebAdmin::SiteDeploy::Site;
 
 BEGIN {
@@ -26,6 +26,12 @@ BEGIN {
     eval { $repo->entries };
     like($@, qr/^abstract method/, 'calling entries fails because it is an abstract method');
 
+    eval { $repo->test_entries };
+    like($@, qr/^abstract method/, 'calling test_entries fails because it is an abstract method');
+
+    eval { $repo->prod_entries };
+    like($@, qr/^abstract method/, 'calling prod_entries fails because it is an abstract method');
+
     eval { $repo->deploy_site($site, 1, "Deploying on behalf of dwc") };
     like($@, qr/^abstract method/, 'calling deploy_site fails because it is an abstract method');
 }
@@ -46,6 +52,12 @@ BEGIN {
 
     eval { $repo->entries };
     like($@, qr/^abstract method/, 'calling entries fails because it is an abstract method');
+
+    eval { $repo->test_entries };
+    like($@, qr/^abstract method/, 'calling test_entries fails because it is an abstract method');
+
+    eval { $repo->prod_entries };
+    like($@, qr/^abstract method/, 'calling prod_entries fails because it is an abstract method');
 
     eval { $repo->deploy_site($site, 1, "Deploying on behalf of dwc") };
     like($@, qr/^abstract method/, 'calling deploy_site fails because it is an abstract method');

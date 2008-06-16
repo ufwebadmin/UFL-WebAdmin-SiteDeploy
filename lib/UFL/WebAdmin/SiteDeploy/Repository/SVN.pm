@@ -29,19 +29,54 @@ sites, using Subversion as the revision control system.
 
 =head2 entries
 
-Return the contents of the repository as of C<HEAD>.
+Return the contents of the repository as of the specified revision.
 
     my $entries = $repo->entries;
     print $entries->{www.ufl.edu}->created_rev;
 
+    my $entries = $repo->entries([ 'www.ufl.edu', 'tags' ], 100);
+    print $entries->{200806161150}->created_rev;
+
 =cut
 
 sub entries {
-    my ($self) = @_;
+    my ($self, $path_segments, $revision) = @_;
 
-    my $entries = $self->client->ls($self->uri, 'HEAD', 0);
+    my $uri = $self->uri->clone;
+    $uri->path_segments($uri->path_segments, @$path_segments);
+
+    $revision = defined $revision ? $revision : 'HEAD';
+
+    my $entries = $self->client->ls($uri, $revision, 0);
 
     return $entries;
+}
+
+=head2 test_entries
+
+Return the contents of the repository for the specified
+L<UFL::WebAdmin::SiteDeploy::Site> corresponding to actions in test.
+
+=cut
+
+sub test_entries {
+    my ($self, $site, $revision) = @_;
+
+    return $self->entries([ $site->uri->host, 'trunk' ], $revision);
+}
+
+=head2 prod_entries
+
+Return the contents of the repository for the specified
+L<UFL::WebAdmin::SiteDeploy::Site> corresponding to actions in
+production.
+
+=cut
+
+sub prod_entries {
+    my ($self, $site, $revision) = @_;
+
+    return $self->entries([ $site->uri->host, 'tags' ], $revision);
 }
 
 =head2 deploy_site
