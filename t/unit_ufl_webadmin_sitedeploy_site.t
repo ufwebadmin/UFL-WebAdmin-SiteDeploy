@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 25;
+use Test::More tests => 27;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
 use URI::file;
 use VCI;
@@ -28,13 +28,15 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
 
     isa_ok($site, 'UFL::WebAdmin::SiteDeploy::Site');
 
+    isa_ok($site->project, 'VCI::VCS::Svn::Project');
+    isa_ok($site->project, 'VCI::Abstract::Project');
+
+    is($site->id, 'www.ufl.edu', 'project identifier matches');
+
     isa_ok($site->uri, 'URI::http');
     is($site->uri, 'http://www.ufl.edu/', 'URI matches');
     is($site->uri->host, 'www.ufl.edu', 'host matches');
     is($site->uri->path, '/', 'path matches');
-
-    isa_ok($site->project, 'VCI::VCS::Svn::Project');
-    isa_ok($site->project, 'VCI::Abstract::Project');
 
     # Test set up for deploy operation
     my $src = $site->_source_uri($site);
@@ -66,13 +68,15 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
 
     isa_ok($site, 'UFL::WebAdmin::SiteDeploy::Site');
 
+    is($site->id, 'this-does-not-exist.ufl.edu', 'project identifier matches');
+
+    isa_ok($site->project, 'VCI::VCS::Svn::Project');
+    isa_ok($site->project, 'VCI::Abstract::Project');
+
     isa_ok($site->uri, 'URI::http');
     is($site->uri, 'http://this-does-not-exist.ufl.edu/', 'URI matches');
     is($site->uri->host, 'this-does-not-exist.ufl.edu', 'host matches');
     is($site->uri->path, '/', 'path matches');
-
-    isa_ok($site->project, 'VCI::VCS::Svn::Project');
-    isa_ok($site->project, 'VCI::Abstract::Project');
 
     # Test an invalid deploy operation
     eval {

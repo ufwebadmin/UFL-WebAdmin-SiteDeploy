@@ -60,6 +60,17 @@ L<UFL::WebAdmin::SiteDeploy>.
 
 =head1 METHODS
 
+=head2 id
+
+Return an identifier for this site, which is the same as the
+L<VCI::Abstract::Project> name.
+
+=cut
+
+sub id {
+    return shift->project->name;
+}
+
 =head2 uri
 
 Return the L<URI> for this site.
@@ -71,7 +82,7 @@ sub uri {
 
     my $uri = URI->new;
     $uri->scheme($self->scheme);
-    $uri->host($self->project->name);
+    $uri->host($self->id);
     $uri->path($self->path);
 
     return $uri;
@@ -85,9 +96,7 @@ deploying to the production version of this site.
 =cut
 
 sub deployments {
-    my ($self) = @_;
-
-    return $self->_deployment_container->contents;
+    return shift->_deployment_container->contents;
 }
 
 =head2 last_deploy
@@ -155,7 +164,7 @@ sub _reload_project {
     my ($self) = @_;
 
     my $repository = $self->project->repository;
-    my $project = $repository->get_project(name => $self->project->name);
+    my $project = $repository->get_project(name => $self->id);
 
     $self->project($project);
 }
@@ -201,7 +210,7 @@ sub _repository_uri {
     my ($self, $subpath) = @_;
 
     my $root = URI->new($self->project->repository->root);
-    my $path = Path::Abstract->new($self->project->name, $subpath);
+    my $path = Path::Abstract->new($self->id, $subpath);
 
     my $uri = URI->new_abs($path, $root);
 
