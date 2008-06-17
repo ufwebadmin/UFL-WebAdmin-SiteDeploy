@@ -88,41 +88,97 @@ sub uri {
     return $uri;
 }
 
+=head2 update_history
+
+Return the L<VCI::Abstract::History> object corresponding with
+updating the test version of this site.
+
+=cut
+
+sub update_history {
+    return shift->_test_directory->contents_history;
+}
+
+=head2 update_commits
+
+Return the L<VCI::Abstract::Commit> objects corresponding with
+updating the test version of this site.
+
+=cut
+
+sub update_commits {
+    return shift->update_history->commits;
+}
+
+=head2 _test_directory
+
+Return the L<VCI::Abstract::Directory> which contains the work done to
+this site in test.
+
+=cut
+
+sub _test_directory {
+    my ($self) = @_;
+
+    return $self->project->get_directory(path => $self->test_path);
+}
+
 =head2 deployments
+
+Return the L<VCI::Abstract::Committable> objects corresponding with
+deploying to the production version of this site.
+
+=cut
+
+sub deployments {
+    return shift->_prod_directory->contents;
+}
+
+=head2 deploy_history
 
 Return the L<VCI::Abstract::History> object corresponding with
 deploying to the production version of this site.
 
 =cut
 
-sub deployments {
-    return shift->_deployment_container->contents;
+sub deploy_history {
+    return shift->_prod_directory->contents_history;
 }
 
-=head2 last_deploy
+=head2 deploy_commits
+
+Return the L<VCI::Abstract::Commit> objects corresponding to deploying
+to the production version of this site.
+
+=cut
+
+sub deploy_commits {
+    return shift->deploy_history->commits;
+}
+
+=head2 last_deployment
 
 Return the L<VCI::Abstract::Commit> corresponding to the last time
 this site was deployed to production.
 
 =cut
 
-sub last_deploy {
+sub last_deployment {
     my ($self) = @_;
 
-    my $history = $self->_deployment_container->contents_history;
-    my $commits = $history->commits;
+    my $commits = $self->deploy_commits;
 
     return $commits->[@$commits - 1];
 }
 
-=head2 _deployment_container
+=head2 _prod_directory
 
 Return the L<VCI::Abstract::Directory> which contains the actual work
 done to deploy this site to production.
 
 =cut
 
-sub _deployment_container {
+sub _prod_directory {
     my ($self) = @_;
 
     return $self->project->get_directory(path => $self->prod_path);
@@ -150,23 +206,6 @@ sub deploy {
     $client->copy($src, $revision, $dst);
 
     $self->_reload_project;
-}
-
-=head2 _reload_project
-
-Reload the L<VCI::Abstract::Project> from the associated
-repository. This is useful, for example, after a L</deploy> operation
-to load any new history about the project.
-
-=cut
-
-sub _reload_project {
-    my ($self) = @_;
-
-    my $repository = $self->project->repository;
-    my $project = $repository->get_project(name => $self->id);
-
-    $self->project($project);
 }
 
 =head2 _source_uri
@@ -215,6 +254,23 @@ sub _repository_uri {
     my $uri = URI->new_abs($path, $root);
 
     return $uri;
+}
+
+=head2 _reload_project
+
+Reload the L<VCI::Abstract::Project> from the associated
+repository. This is useful, for example, after a L</deploy> operation
+to load any new history about the project.
+
+=cut
+
+sub _reload_project {
+    my ($self) = @_;
+
+    my $repository = $self->project->repository;
+    my $project = $repository->get_project(name => $self->id);
+
+    $self->project($project);
 }
 
 =head1 AUTHOR

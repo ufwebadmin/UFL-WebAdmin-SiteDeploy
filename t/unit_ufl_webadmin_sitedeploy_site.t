@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 27;
+use Test::More tests => 37;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
 use URI::file;
 use VCI;
@@ -38,6 +38,24 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
     is($site->uri->host, 'www.ufl.edu', 'host matches');
     is($site->uri->path, '/', 'path matches');
 
+    my $update_history = $site->update_history;
+    isa_ok($update_history, 'VCI::VCS::Svn::History');
+    isa_ok($update_history, 'VCI::Abstract::History');
+
+    my $update_commits = $site->update_commits;
+    is(scalar @$update_commits, 3, 'found three update commits');
+    isa_ok($update_commits->[0], 'VCI::VCS::Svn::Commit');
+    isa_ok($update_commits->[0], 'VCI::Abstract::Commit');
+
+    my $deploy_history = $site->deploy_history;
+    isa_ok($deploy_history, 'VCI::VCS::Svn::History');
+    isa_ok($deploy_history, 'VCI::Abstract::History');
+
+    my $deploy_commits = $site->deploy_commits;
+    is(scalar @$deploy_commits, 3, 'found three deploy commits');
+    isa_ok($deploy_commits->[0], 'VCI::VCS::Svn::Commit');
+    isa_ok($deploy_commits->[0], 'VCI::Abstract::Commit');
+
     # Test set up for deploy operation
     my $src = $site->_source_uri($site);
     isa_ok($src, 'URI::file');
@@ -57,7 +75,8 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
 
     my $new_tags = $site->deployments;
     is(scalar @$new_tags, 3, 'tags directory now contains three tags');
-    is($site->last_deploy->message, 'Deploying http://www.ufl.edu/ on behalf of dwc', 'log message is correct');
+
+    is($site->last_deployment->message, 'Deploying http://www.ufl.edu/ on behalf of dwc', 'log message is correct');
 }
 
 {
