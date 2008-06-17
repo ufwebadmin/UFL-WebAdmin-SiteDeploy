@@ -5,7 +5,8 @@ Revision history for UFL-WebAdmin-SiteDeploy
           UFL::WebAdmin::SiteDeploy::TestRepository
         - Declare required attributes as such to make initialization
           errors obvious
-        - Add a prod_entries method
+        - Remove UFL::WebAdmin::SiteDeploy::Repository and related
+          modules in favor of VCI
 
 0.06  Thu Jun 12 14:06:44 EDT 2008
         - Refactor deployment code

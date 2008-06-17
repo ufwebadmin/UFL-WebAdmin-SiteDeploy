@@ -2,8 +2,19 @@ package UFL::WebAdmin::SiteDeploy::Types;
 
 use Moose;
 use Moose::Util::TypeConstraints;
+use Path::Abstract;
 use Path::Class::Dir;
+use Path::Class::File;
 use URI;
+
+subtype 'Path::Abstract'
+    => as 'Object'
+    => where { $_->isa('Path::Abstract') };
+
+coerce 'Path::Abstract'
+    => from 'Str'
+        => via { Path::Abstract->new($_) };
+
 
 subtype 'Path::Class::Dir'
     => as 'Object'
