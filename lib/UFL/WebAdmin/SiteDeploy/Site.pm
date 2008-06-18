@@ -96,7 +96,7 @@ updating the test version of this site.
 =cut
 
 sub update_history {
-    return shift->_test_directory->contents_history;
+    return shift->_test_directory->contents_history_recursive;
 }
 
 =head2 update_commits

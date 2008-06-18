@@ -38,12 +38,12 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
     is($site->uri->host, 'www.ufl.edu', 'host matches');
     is($site->uri->path, '/', 'path matches');
 
+    # XXX: Calling head_revision seems to change what we get for update_commits and deploy_commits
+    is($site->project->head_revision, 8, 'project head revision is correct');
+
     my $update_history = $site->update_history;
     isa_ok($update_history, 'VCI::VCS::Svn::History');
     isa_ok($update_history, 'VCI::Abstract::History');
-
-    # XXX: Calling head_revision seems to change what we get for update_commits and deploy_commits
-    is($site->project->head_revision, 8, 'project head revision is correct');
 
     my $update_commits = $site->update_commits;
     is(scalar @$update_commits, 3, 'found three update commits');
