@@ -22,24 +22,24 @@ has 'scheme' => (
 has 'path' => (
     is => 'rw',
     isa => 'Path::Abstract',
-    required => 1,
     coerce => 1,
+    required => 1,
     default => sub { Path::Abstract->new('/') },
 );
 
 has 'test_path' => (
     is => 'rw',
     isa => 'Path::Abstract',
-    required => 1,
     coerce => 1,
+    required => 1,
     default => sub { Path::Abstract->new('trunk') },
 );
 
 has 'prod_path' => (
     is => 'rw',
     isa => 'Path::Abstract',
-    required => 1,
     coerce => 1,
+    required => 1,
     default => sub { Path::Abstract->new('tags') },
 );
 
