@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 40;
+use Test::More tests => 41;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
 use URI::file;
 use VCI;
@@ -74,14 +74,16 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
     my $current_tags = $site->deployments;
     is(scalar @$current_tags, 2, 'tags directory currently contains two tags');
 
-    $site->deploy(13, "Deploying " . $site->uri . " on behalf of dwc");
+    $site->deploy(13, "Deploying " . $site->id . " on behalf of dwc");
+    eval { $site->deploy(13, "Deploying " . $site->id . " on behalf of dwc") };
+    like($@, qr/^Site has already been deployed/, 'got an error message on duplicate deploy times');
 
     my $new_tags = $site->deployments;
     is(scalar @$new_tags, 3, 'tags directory now contains three tags');
 
     is($site->project->head_revision, 14, 'project head revision after deploy is correct');
     is(scalar @{ $site->deploy_commits }, 3, 'found three deploy commits');
-    is($site->last_deployment->message, 'Deploying http://www.ufl.edu/ on behalf of dwc', 'log message is correct');
+    is($site->last_deployment->message, 'Deploying www.ufl.edu on behalf of dwc', 'log message is correct');
 }
 
 {

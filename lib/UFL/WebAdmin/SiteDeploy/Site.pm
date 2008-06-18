@@ -198,6 +198,14 @@ sub deploy {
     my $dst = $self->_destination_uri($self);
 
     my $client = SVN::Client->new;
+
+    eval {
+        $client->ls($dst, 'HEAD', 0);
+    };
+    unless ($@) {
+        die "Site has already been deployed to $dst"
+    }
+
     $client->log_msg(sub {
         my ($msg) = @_;
         $$msg = $message;
