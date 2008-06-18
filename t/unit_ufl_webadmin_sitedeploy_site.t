@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 41;
+use Test::More tests => 42;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
 use URI::file;
 use VCI;
@@ -83,7 +83,9 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
 
     is($site->project->head_revision, 14, 'project head revision after deploy is correct');
     is(scalar @{ $site->deploy_commits }, 3, 'found three deploy commits');
-    is($site->last_deployment->message, 'Deploying www.ufl.edu on behalf of dwc', 'log message is correct');
+
+    is($site->last_update->message, 'Add another file', 'log message for most recent update is correct');
+    is($site->last_deployment->message, 'Deploying www.ufl.edu on behalf of dwc', 'log message for most recent deployment is correct');
 }
 
 {

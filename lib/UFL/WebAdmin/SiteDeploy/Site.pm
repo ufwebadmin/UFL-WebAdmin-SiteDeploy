@@ -110,6 +110,22 @@ sub update_commits {
     return shift->update_history->commits;
 }
 
+=head2 last_update
+
+Return the L<VCI::Abstract::Commit> corresponding to the last time
+this site was updated (in test).
+
+=cut
+
+sub last_update {
+    my ($self) = @_;
+
+    my $last_revision = $self->_test_directory->revision;
+    my $commit = $self->project->get_commit(revision => $last_revision);
+
+    return $commit;
+}
+
 =head2 _test_directory
 
 Return the L<VCI::Abstract::Directory> which contains the work done to
@@ -166,9 +182,10 @@ this site was deployed to production.
 sub last_deployment {
     my ($self) = @_;
 
-    my $commits = $self->deploy_commits;
+    my $last_revision = $self->_prod_directory->revision;
+    my $commit = $self->project->get_commit(revision => $last_revision);
 
-    return $commits->[@$commits - 1];
+    return $commit;
 }
 
 =head2 _prod_directory
