@@ -1,6 +1,6 @@
 Revision history for UFL-WebAdmin-SiteDeploy
 
-0.07
+0.07  Thu Jun 19 15:54:23 EDT 2008
         - Refactor common defaults to
           UFL::WebAdmin::SiteDeploy::TestRepository
         - Declare required attributes as such to make initialization
