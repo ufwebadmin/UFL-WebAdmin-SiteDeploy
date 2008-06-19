@@ -201,6 +201,23 @@ sub _prod_directory {
     return $self->project->get_directory(path => $self->prod_path);
 }
 
+=head2 has_outstanding_changes
+
+Return true iff this site has outstanding changes, i.e. the last time
+it was updated is after the last time it was deployed.
+
+=cut
+
+sub has_outstanding_changes {
+    my ($self) = @_;
+
+    my $last_update = $self->last_update;
+    my $last_deployment = $self->last_deployment;
+
+    return ($last_update and $last_deployment
+        and $last_update->time > $last_deployment->time);
+}
+
 =head2 deploy
 
 Deploy this site to production from the repository.

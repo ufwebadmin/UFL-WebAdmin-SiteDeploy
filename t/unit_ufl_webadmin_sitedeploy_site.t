@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 42;
+use Test::More tests => 47;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
 use URI::file;
 use VCI;
@@ -71,6 +71,8 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
     like($dst, qr|$REPO_URI/www.ufl.edu/tags/\d{12}|, 'destination URI matches');
 
     # Test deploy operation
+    ok(! $site->has_outstanding_changes, 'site does not have any outstanding changes before deploy');
+
     my $current_tags = $site->deployments;
     is(scalar @$current_tags, 2, 'tags directory currently contains two tags');
 
@@ -86,8 +88,25 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
 
     is($site->last_update->message, 'Add another file', 'log message for most recent update is correct');
     is($site->last_deployment->message, 'Deploying www.ufl.edu on behalf of dwc', 'log message for most recent deployment is correct');
+
+    ok(! $site->has_outstanding_changes, 'site does not have any outstanding changes adter deploy');
 }
 
+# Site with outstanding changes
+{
+    my $project = $REPO->get_project(name => 'www.webadmin.ufl.edu');
+    my $site = UFL::WebAdmin::SiteDeploy::Site->new(
+        project => $project,
+    );
+
+    isa_ok($site, 'UFL::WebAdmin::SiteDeploy::Site');
+
+    ok($site->has_outstanding_changes, 'site has outstanding changes before deploy');
+    $site->deploy(13, "Deploying " . $site->id . " on behalf of dwc");
+    ok(! $site->has_outstanding_changes, 'site does not have any outstanding changes adter deploy');
+}
+
+# Nonexistent site
 {
     my $project = $REPO->get_project(name => 'this-does-not-exist.ufl.edu');
     my $site = UFL::WebAdmin::SiteDeploy::Site->new(
