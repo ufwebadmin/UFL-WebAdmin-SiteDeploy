@@ -43,11 +43,14 @@ build_requires 'FindBin';
 build_requires 'Moose';
 build_requires 'Path::Class::Dir';
 build_requires 'Path::Class::File';
+build_requires 'Log::Log4perl';
 build_requires 'Test::Log4perl';
 build_requires 'Test::More';
 build_requires 'URI::file';
 build_requires 'VCI';
 
 install_script glob('script/*.pl');
+
+clean_files('t/var');
 
 WriteAll;
