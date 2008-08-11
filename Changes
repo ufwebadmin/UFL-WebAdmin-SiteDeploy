@@ -1,5 +1,9 @@
 Revision history for UFL-WebAdmin-SiteDeploy
 
+0.08
+        - Add logging of SVN::Notify::Mirror command output to attempt
+          to catch problems
+
 0.07  Thu Jun 19 15:54:23 EDT 2008
         - Refactor common defaults to
           UFL::WebAdmin::SiteDeploy::TestRepository

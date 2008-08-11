@@ -31,6 +31,22 @@ before '_cd_run' => sub {
     $self->_log->debug("Command = [$command @args]");
 };
 
+around '_cd_run' => sub {
+    # Capture any output from SVN::Notify::Mirror
+    my $next = shift;
+    my @output = $next->(@_);
+
+    my $self = shift;
+
+    # XXX: Not sure if the return code is eaten somewhere in SVN::Notify::Mirror
+    $self->_log->debug("Return code = [$?]");
+
+    my $message = @output ? "Output = [" . join("\n", @output) . "]" : "(No output from command)";
+    $self->_log->debug($message);
+
+    return @output;
+};
+
 after '_cd_run' => sub {
     my ($self, $path) = @_;
 
@@ -39,6 +55,7 @@ after '_cd_run' => sub {
     my $info;
     $client->info($path, undef, $self->revision, sub { $info = $_[1] }, 0);
 
+    # XXX: This may be confusing since the log implies we're still doing the operation, but this method runs after
     $self->_log->info("Mirroring " . $info->URL . ", revision " . $info->rev);
     $self->_log->debug("Last change: revision " . $info->last_changed_rev . " by " . $info->last_changed_author);
 };
