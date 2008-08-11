@@ -1,6 +1,6 @@
 Revision history for UFL-WebAdmin-SiteDeploy
 
-0.08
+0.08  Mon Aug 11 17:24:24 EDT 2008
         - Add logging of SVN::Notify::Mirror command output to attempt
           to catch problems
 
