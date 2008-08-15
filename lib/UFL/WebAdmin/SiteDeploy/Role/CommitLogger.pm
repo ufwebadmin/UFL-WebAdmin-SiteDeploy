@@ -3,7 +3,8 @@ package UFL::WebAdmin::SiteDeploy::Role::CommitLogger;
 use Moose::Role;
 use Log::Log4perl;
 
-requires 'log_category';
+# XXX: See http://search.cpan.org/dist/Moose/lib/Moose/Role.pm#CAVEATS
+#requires 'log_category';
 
 has '_log' => (
     is => 'rw',

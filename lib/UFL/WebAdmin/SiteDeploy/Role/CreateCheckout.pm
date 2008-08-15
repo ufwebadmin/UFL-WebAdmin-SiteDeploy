@@ -3,8 +3,9 @@ package UFL::WebAdmin::SiteDeploy::Role::CreateCheckout;
 use Moose::Role;
 use SVN::Client;
 
-requires 'repos_uri';
-requires 'revision';
+# XXX: See http://search.cpan.org/dist/Moose/lib/Moose/Role.pm#CAVEATS
+#requires 'repos_uri';
+#requires 'revision';
 
 before '_cd_run' => sub {
     my ($self, $path) = @_;
