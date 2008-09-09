@@ -110,7 +110,7 @@ sub _load_svn_notify_config {
     my $uri = $self->_svn_notify_config_uri;
 
     my $client = SVN::Client->new;
-    $client->cat($fh, $uri, $self->revision);
+    $client->cat($fh, $uri->as_string, $self->revision);
 
     return YAML::Load($config);
 }
