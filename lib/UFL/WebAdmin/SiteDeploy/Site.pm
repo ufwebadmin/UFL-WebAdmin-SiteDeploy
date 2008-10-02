@@ -234,7 +234,7 @@ sub deploy {
     my $client = SVN::Client->new;
 
     eval {
-        $client->ls($dst, 'HEAD', 0);
+        $client->ls($dst->as_string, 'HEAD', 0);
     };
     unless ($@) {
         die "Site has already been deployed to $dst"
@@ -245,7 +245,7 @@ sub deploy {
         $$msg = $message;
     });
 
-    $client->copy($src, $revision, $dst);
+    $client->copy($src->as_string, $revision, $dst->as_string);
 
     $self->_reload_project;
 }
