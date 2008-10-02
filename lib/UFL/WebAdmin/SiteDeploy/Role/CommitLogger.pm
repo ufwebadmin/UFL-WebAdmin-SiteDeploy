@@ -56,8 +56,7 @@ after '_cd_run' => sub {
     my $info;
     $client->info($path, undef, $self->revision, sub { $info = $_[1] }, 0);
 
-    # XXX: This may be confusing since the log implies we're still doing the operation, but this method runs after
-    $self->_log->info("Mirroring " . $info->URL . ", revision " . $info->rev);
+    $self->_log->info("Repository URL is now " . $info->URL . " at revision " . $info->rev);
     $self->_log->debug("Last change: revision " . $info->last_changed_rev . " by " . $info->last_changed_author);
 };
 
