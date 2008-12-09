@@ -124,7 +124,7 @@ sub run_tests {
 
     my $test_logger = Test::Log4perl->get_logger($notifier->log_category);
     Test::Log4perl->start(ignore_priority => 'debug');
-    $test_logger->info("Mirroring $repos_uri, revision $args->{revision}");
+    $test_logger->info("Repository URL is now $repos_uri at revision $args->{revision}");
     $notifier->execute;
     Test::Log4perl->end("handler logged some basic information");
 
