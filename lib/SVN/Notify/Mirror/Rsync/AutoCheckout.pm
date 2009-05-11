@@ -2,6 +2,7 @@ package SVN::Notify::Mirror::Rsync::AutoCheckout;
 
 use Moose;
 use Cwd ();
+use Net::SSH ();
 
 extends 'SVN::Notify::Mirror::Rsync';
 
@@ -13,6 +14,7 @@ with 'UFL::WebAdmin::SiteDeploy::Role::CreateCheckout',
 __PACKAGE__->register_attributes(
     repos_uri    => 'repos-uri:s',
     tag_pattern  => 'tag-pattern:s',
+    chown_spec   => 'chown-spec:s',
     log_category => 'log-category:s',
 );
 
@@ -27,6 +29,21 @@ around 'execute' => sub {
     my $cwd = Cwd::getcwd();
     $next->(@_);
     chdir($cwd);
+};
+
+# XXX: Should this be a role?
+after 'execute' => sub {
+    my ($self) = @_;
+
+    return unless $self->rsync_ssh and $self->chown_spec;
+
+    # Update the ownership for suEXEC
+    Net::SSH::ssh_cmd({
+        user => $self->ssh_user,
+        host => $self->rsync_host,
+        command => 'chown',
+        args => [ '-R', $self->chown_spec, $self->rsync_dest ],
+    });
 };
 
 =head1 NAME

@@ -10,7 +10,7 @@ use UFL::WebAdmin::SiteDeploy::TestRepository;
 BEGIN {
     plan skip_all => "set TEST_AUTHOR to run these tests"
         unless $ENV{TEST_AUTHOR};
-    plan tests => 5 + 4*10;
+    plan tests => 9 + 5*10;
 
     use_ok('SVN::Notify::Mirror::Rsync::AutoCheckout');
 }
@@ -72,6 +72,7 @@ run_tests(
     },
 );
 
+
 # Using tags with a suffix
 $TEST_REPO->init;
 ok(! -d $CHECKOUT_DIR, 'checkout directory does not exist');
@@ -107,6 +108,34 @@ run_tests(
 );
 
 
+# Changing ownership
+$TEST_REPO->init;
+ok(! -d $CHECKOUT_DIR, 'checkout directory does not exist');
+
+my $uid = $>;
+my $gid = get_nonlogin_gid();
+my $username = (getpwuid($uid))[0];
+
+run_tests(
+    $CHECKOUT_DIR,
+    $RSYNC_DIR,
+    [ 'test.txt' ],
+    "$REPO_URI/www.ufl.edu/trunk/htdocs",
+    {
+        %NOTIFIER_ARGS,
+        repos_uri  => "$REPO_URI/www.ufl.edu/trunk/htdocs",
+        ssh_user   => $username,
+        chown_spec => "$uid:$gid",
+    },
+);
+
+ok(-d $RSYNC_DIR, 'rsync directory exists');
+
+my ($dest_uid, $dest_gid) = (stat $RSYNC_DIR)[4,5];
+is($dest_uid, $uid, 'set ownership to the correct uid');
+is($dest_gid, $gid, 'set ownership to the correct gid');
+
+
 sub run_tests {
     my ($checkout_dir, $rsync_dir, $files, $repos_uri, $args) = @_;
 
@@ -138,4 +167,13 @@ sub run_tests {
         ok(-f $checkout_dir->file($file), "checkout directory contains checkout file $file");
         ok(-f $rsync_dir->file($file), "rsync directory contains checkout file $file");
     }
+}
+
+sub get_nonlogin_gid {
+    my @gids = split /\s+/, $);
+
+    my $default_gid = shift @gids;
+    @gids = grep { $_ != $default_gid } @gids;
+
+    return $gids[int(rand(length @gids))];
 }

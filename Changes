@@ -4,6 +4,7 @@ Revision history for UFL-WebAdmin-SiteDeploy
         - Update logging format to make command output easier to read
         - Rename CommitLogger to LogCommit for consistency with other
           roles
+        - Add support for updating ownership after an rsync operation
 
 0.10  Tue Dec  9 17:45:15 EST 2008
         - Force stringification on SVN::Notify::Config URI to make
