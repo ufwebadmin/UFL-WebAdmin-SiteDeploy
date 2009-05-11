@@ -55,6 +55,7 @@ SVN::Notify::Mirror::Rsync::AutoCheckout - Automatically create the checkout dir
     svnnotify --handler Mirror::Rsync::AutoCheckout \
         --repos-uri "file:///var/svn/repos/websites/www.ufl.edu/trunk"
         [--tag-pattern "\d{12}"] \
+        [--chown-spec "wwwuf:webuf"] \
         [--log-category "websites"]
 
 See also L<SVN::Notify::Mirror::Rsync>.
