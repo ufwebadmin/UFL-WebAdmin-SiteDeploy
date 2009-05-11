@@ -24,7 +24,7 @@ override 'execute' => sub {
 # XXX: Apply roles after overriding execute; otherwise Moose barfs
 with 'UFL::WebAdmin::SiteDeploy::Role::CreateCheckout',
     'UFL::WebAdmin::SiteDeploy::Role::SwitchCheckout',
-    'UFL::WebAdmin::SiteDeploy::Role::CommitLogger';
+    'UFL::WebAdmin::SiteDeploy::Role::LogCommit';
 
 =head1 NAME
 

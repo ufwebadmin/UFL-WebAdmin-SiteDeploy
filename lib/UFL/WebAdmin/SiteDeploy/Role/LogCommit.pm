@@ -1,4 +1,4 @@
-package UFL::WebAdmin::SiteDeploy::Role::CommitLogger;
+package UFL::WebAdmin::SiteDeploy::Role::LogCommit;
 
 use Moose::Role;
 use Log::Log4perl;
@@ -68,13 +68,13 @@ after '_cd_run' => sub {
 
 =head1 NAME
 
-UFL::WebAdmin::SiteDeploy::Role::CommitLogger - Log information about the mirror operation
+UFL::WebAdmin::SiteDeploy::Role::LogCommit - Log information about the mirror operation
 
 =head1 SYNOPSIS
 
     package SVN::Notify::Mirror::Logger;
     use Moose;
-    with 'UFL::WebAdmin::SiteDeploy::Role::CommitLogger';
+    with 'UFL::WebAdmin::SiteDeploy::Role::LogCommit';
 
 =head1 DESCRIPTION
 
