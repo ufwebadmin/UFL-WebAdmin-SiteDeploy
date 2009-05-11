@@ -2,7 +2,6 @@ package SVN::Notify::Mirror::Rsync::AutoCheckout;
 
 use Moose;
 use Cwd ();
-use Net::SSH ();
 
 extends 'SVN::Notify::Mirror::Rsync';
 
@@ -36,6 +35,8 @@ after 'execute' => sub {
     my ($self) = @_;
 
     return unless $self->rsync_ssh and $self->chown_spec;
+
+    require Net::SSH;
 
     # Update the ownership for suEXEC
     Net::SSH::ssh_cmd({

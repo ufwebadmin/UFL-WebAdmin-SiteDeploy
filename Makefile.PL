@@ -13,6 +13,7 @@ requires 'Moose::Util::TypeConstraints';
 requires 'MooseX::App::Cmd';
 requires 'MooseX::App::Cmd::Command';
 requires 'MooseX::Getopt';
+requires 'Net::SSH';
 requires 'Path::Abstract';
 requires 'Path::Class::Dir';
 requires 'Path::Class::File';
