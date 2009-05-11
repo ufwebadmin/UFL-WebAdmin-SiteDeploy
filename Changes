@@ -1,6 +1,6 @@
 Revision history for UFL-WebAdmin-SiteDeploy
 
-0.11
+0.11  Mon May 11 17:04:17 EDT 2009
         - Update logging format to make command output easier to read
         - Rename CommitLogger to LogCommit for consistency with other
           roles
