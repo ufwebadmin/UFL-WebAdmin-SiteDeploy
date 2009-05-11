@@ -42,8 +42,14 @@ around '_cd_run' => sub {
     # XXX: Not sure if the return code is eaten somewhere in SVN::Notify::Mirror
     $self->_log->debug("Return code = [$?]");
 
-    my $message = @output ? "Output = [" . join("\n", @output) . "]" : "(No output from command)";
-    $self->_log->debug($message);
+    if (@output) {
+        $self->_log->debug("Output = [");
+        $self->_log->debug("\t$_") for @output;
+        $self->_log->debug("]");
+    }
+    else {
+        $self->_log->debug("(No output from command)");
+    }
 
     return @output;
 };
