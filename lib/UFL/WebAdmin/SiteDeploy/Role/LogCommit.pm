@@ -43,9 +43,7 @@ around '_cd_run' => sub {
     $self->_log->debug("Return code = [$?]");
 
     if (@output) {
-        $self->_log->debug("Output = [");
-        $self->_log->debug("\t$_") for @output;
-        $self->_log->debug("]");
+        $self->_log_multiline("Output", @output);
     }
     else {
         $self->_log->debug("(No output from command)");
@@ -84,6 +82,23 @@ operation.
 
 Logging is performed via L<Log::Log4perl>. The logging category is
 determined via the C<log_category> attribute.
+
+=head1 METHODS
+
+=head2 log_multiline
+
+Log one or more lines of text at the debug level. Each line is
+indented, and the overall string is wrapped in brackets.
+
+=cut
+
+sub _log_multiline {
+    my ($self, $title, @lines) = @_;
+
+    $self->_log->debug("$title = [");
+    $self->_log->debug("\t$_") for @lines;
+    $self->_log->debug("]");
+}
 
 =head1 SEE ALSO
 

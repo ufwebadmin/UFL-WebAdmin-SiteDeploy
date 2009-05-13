@@ -10,7 +10,7 @@ use UFL::WebAdmin::SiteDeploy::TestRepository;
 BEGIN {
     plan skip_all => "set TEST_AUTHOR to run these tests"
         unless $ENV{TEST_AUTHOR};
-    plan tests => 9 + 5*10;
+    plan tests => 13 + 6*10;
 
     use_ok('SVN::Notify::Mirror::Rsync::AutoCheckout');
 }
@@ -109,31 +109,62 @@ run_tests(
 
 
 # Changing ownership
-$TEST_REPO->init;
-ok(! -d $CHECKOUT_DIR, 'checkout directory does not exist');
+{
+    $TEST_REPO->init;
+    ok(! -d $CHECKOUT_DIR, 'checkout directory does not exist');
 
-my $uid = $>;
-my $gid = get_nonlogin_gid();
-my $username = (getpwuid($uid))[0];
+    my $uid = $>;
+    my $gid = get_nonlogin_gid();
+    my $username = (getpwuid($uid))[0];
 
-run_tests(
-    $CHECKOUT_DIR,
-    $RSYNC_DIR,
-    [ 'test.txt' ],
-    "$REPO_URI/www.ufl.edu/trunk/htdocs",
-    {
-        %NOTIFIER_ARGS,
-        repos_uri  => "$REPO_URI/www.ufl.edu/trunk/htdocs",
-        ssh_user   => $username,
-        chown_spec => "$uid:$gid",
-    },
-);
+    run_tests(
+        $CHECKOUT_DIR,
+        $RSYNC_DIR,
+        [ 'test.txt' ],
+        "$REPO_URI/www.ufl.edu/trunk/htdocs",
+        {
+            %NOTIFIER_ARGS,
+            repos_uri  => "$REPO_URI/www.ufl.edu/trunk/htdocs",
+            ssh_user   => $username,
+            chown_spec => "$uid:$gid",
+        },
+    );
 
-ok(-d $RSYNC_DIR, 'rsync directory exists');
+    ok(-d $RSYNC_DIR, 'rsync directory exists');
 
-my ($dest_uid, $dest_gid) = (stat $RSYNC_DIR)[4,5];
-is($dest_uid, $uid, 'set ownership to the correct uid');
-is($dest_gid, $gid, 'set ownership to the correct gid');
+    my ($dest_uid, $dest_gid) = (stat $RSYNC_DIR)[4,5];
+    is($dest_uid, $uid, 'set ownership to the correct uid');
+    is($dest_gid, $gid, 'set ownership to the correct gid');
+}
+
+# Changing ownership to invalid group
+{
+    $TEST_REPO->init;
+    ok(! -d $CHECKOUT_DIR, 'checkout directory does not exist');
+
+    my $uid = 0;
+    my $gid = 0;
+    my $username = (getpwuid($>))[0];
+
+    run_tests(
+        $CHECKOUT_DIR,
+        $RSYNC_DIR,
+        [ 'test.txt' ],
+        "$REPO_URI/www.ufl.edu/trunk/htdocs",
+        {
+            %NOTIFIER_ARGS,
+            repos_uri  => "$REPO_URI/www.ufl.edu/trunk/htdocs",
+            ssh_user   => $username,
+            chown_spec => "$uid:$gid",
+        },
+    );
+
+    ok(-d $RSYNC_DIR, 'rsync directory exists');
+
+    my ($dest_uid, $dest_gid) = (stat $RSYNC_DIR)[4,5];
+    isnt($dest_uid, $uid, 'did not set ownership to the requested uid');
+    isnt($dest_gid, $gid, 'did not set ownership to the requested gid');
+}
 
 
 sub run_tests {

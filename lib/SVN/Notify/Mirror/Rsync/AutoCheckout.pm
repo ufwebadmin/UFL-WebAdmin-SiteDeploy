@@ -34,17 +34,34 @@ around 'execute' => sub {
 after 'execute' => sub {
     my ($self) = @_;
 
-    return unless $self->rsync_ssh and $self->chown_spec;
-
-    require Net::SSH;
+    my $chown_spec = $self->chown_spec;
+    return unless $self->rsync_ssh and $chown_spec;
 
     # Update the ownership for suEXEC
-    Net::SSH::ssh_cmd({
-        user => $self->ssh_user,
-        host => $self->rsync_host,
-        command => 'chown',
-        args => [ '-R', $self->chown_spec, $self->rsync_dest ],
-    });
+    my $rsync_dest = $self->rsync_dest;
+    $self->_log->debug("Changing ownership of files under [$rsync_dest] to [$chown_spec]");
+
+    my ($stdout, $stderr);
+    eval {
+        require Net::SSH;
+
+        $stdout = Net::SSH::ssh_cmd({
+            user => $self->ssh_user,
+            host => $self->rsync_host,
+            command => 'chown',
+            args => [ '-R', $chown_spec, $rsync_dest ],
+        });
+    };
+    if ($@) {
+        $stderr = $@;
+    }
+
+    $self->_log_multiline("Output", split /\n/, $stdout)
+        if $stdout;
+    $self->_log_multiline("Error", split /\n/, $stderr)
+        if $stderr;
+    
+    $self->_log->debug("Finished changing ownership");
 };
 
 =head1 NAME

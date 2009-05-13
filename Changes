@@ -1,5 +1,9 @@
 Revision history for UFL-WebAdmin-SiteDeploy
 
+0.12
+        - Handle errors in changing ownership for files that are
+          e.g. created from someone else's crontab (#51)
+
 0.11  Mon May 11 17:04:17 EDT 2009
         - Update logging format to make command output easier to read
         - Rename CommitLogger to LogCommit for consistency with other
