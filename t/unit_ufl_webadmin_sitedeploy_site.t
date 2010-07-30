@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 47;
+use Test::More tests => 58;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
 use URI::file;
 use VCI;
@@ -83,7 +83,7 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
     my $new_tags = $site->deployments;
     is(scalar @$new_tags, 3, 'tags directory now contains three tags');
 
-    is($site->project->head_revision, 14, 'project head revision after deploy is correct');
+    is($site->project->head_revision, 15, 'project head revision after deploy is correct');
     is(scalar @{ $site->deploy_commits }, 3, 'found three deploy commits');
 
     is($site->last_update->message, 'Add another file', 'log message for most recent update is correct');
@@ -124,6 +124,43 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
     is($site->uri, 'http://this-does-not-exist.ufl.edu/', 'URI matches');
     is($site->uri->host, 'this-does-not-exist.ufl.edu', 'host matches');
     is($site->uri->path, '/', 'path matches');
+
+    # Test an invalid deploy operation
+    eval {
+        $site->deploy(13, "Deploying site")
+    };
+    like($@, qr/^Filesystem has no item/, 'got an error message for a nonexistent site');
+}
+
+# Invalid site
+{
+    my $project = $REPO->get_project(name => 'ufl.to');
+    my $site = UFL::WebAdmin::SiteDeploy::Site->new(
+        project => $project,
+    );
+
+    isa_ok($site, 'UFL::WebAdmin::SiteDeploy::Site');
+
+    is($site->id, 'ufl.to', 'project identifier matches');
+
+    isa_ok($site->project, 'VCI::VCS::Svn::Project');
+    isa_ok($site->project, 'VCI::Abstract::Project');
+
+    isa_ok($site->uri, 'URI::http');
+    is($site->uri, 'http://ufl.to/', 'URI matches');
+    is($site->uri->host, 'ufl.to', 'host matches');
+    is($site->uri->path, '/', 'path matches');
+
+    # Test loading data from the repository
+    eval {
+        my $commit = $site->last_update;
+    };
+    like($@, qr/Site 'ufl.to' appears to be invalid; does not contain a test directory \(a directory named 'trunk'\)/, 'got an error for a site with an invalid repository structure');
+
+    eval {
+        my $commit = $site->last_deployment;
+    };
+    like($@, qr/Site 'ufl.to' appears to be invalid; does not contain a production directory \(a directory named 'tags'\)/, 'got an error for a site with an invalid repository structure');
 
     # Test an invalid deploy operation
     eval {

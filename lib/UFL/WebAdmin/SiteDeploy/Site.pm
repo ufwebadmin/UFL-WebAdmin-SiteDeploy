@@ -136,7 +136,11 @@ this site in test.
 sub _test_directory {
     my ($self) = @_;
 
-    return $self->project->get_directory(path => $self->test_path);
+    my $test_directory = $self->project->get_directory(path => $self->test_path);
+    die "Site '" . $self->project->name . "' appears to be invalid; does not contain a test directory (a directory named '" . $self->test_path . "')"
+        unless $test_directory;
+
+    return $test_directory;
 }
 
 =head2 deployments
@@ -198,7 +202,11 @@ done to deploy this site to production.
 sub _prod_directory {
     my ($self) = @_;
 
-    return $self->project->get_directory(path => $self->prod_path);
+    my $prod_directory = $self->project->get_directory(path => $self->prod_path);
+    die "Site '" . $self->project->name . "' appears to be invalid; does not contain a production directory (a directory named '" . $self->prod_path . "')"
+        unless $prod_directory;
+
+    return $prod_directory;
 }
 
 =head2 has_outstanding_changes

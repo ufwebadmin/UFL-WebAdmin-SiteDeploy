@@ -1,5 +1,8 @@
 Revision history for UFL-WebAdmin-SiteDeploy
 
+0.13
+        - Fail more quickly with invalidly structured sites (#121)
+
 0.12  Wed May 13 16:41:06 EDT 2009
         - Handle errors in changing ownership for files that are
           e.g. created from someone else's crontab (#51)

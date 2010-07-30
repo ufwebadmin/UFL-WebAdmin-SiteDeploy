@@ -4,7 +4,7 @@ use Moose;
 
 extends 'MooseX::App::Cmd';
 
-our $VERSION = '0.12';
+our $VERSION = '0.13_01';
 
 =head1 NAME
 
