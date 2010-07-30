@@ -56,14 +56,14 @@ UFL::WebAdmin::SiteDeploy::Command::deploy - deploy a Web site
 
 =head1 METHODS
 
-=head2 run
+=head2 execute
 
 Deploy the specified revision in the specific repository using
 L<SVN::Notify::Config>.
 
 =cut
 
-sub run {
+sub execute {
     my ($self, $opt, $args) = @_;
 
     if ($self->log_config) {
