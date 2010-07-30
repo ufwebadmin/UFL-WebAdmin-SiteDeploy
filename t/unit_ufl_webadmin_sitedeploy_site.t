@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 58;
+use Test::More tests => 62;
 use UFL::WebAdmin::SiteDeploy::TestRepository;
 use URI::file;
 use VCI;
@@ -37,6 +37,8 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
     is($site->uri, 'http://www.ufl.edu/', 'URI matches');
     is($site->uri->host, 'www.ufl.edu', 'host matches');
     is($site->uri->path, '/', 'path matches');
+
+    ok($site->is_valid, 'www.ufl.edu repository is valid');
 
     # XXX: Calling head_revision seems to change what we get for update_commits and deploy_commits
     is($site->project->head_revision, 8, 'project head revision is correct');
@@ -101,6 +103,8 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
 
     isa_ok($site, 'UFL::WebAdmin::SiteDeploy::Site');
 
+    ok($site->is_valid, 'www.webadmin.ufl.edu repository is valid');
+
     ok($site->has_outstanding_changes, 'site has outstanding changes before deploy');
     $site->deploy(13, "Deploying " . $site->id . " on behalf of dwc");
     ok(! $site->has_outstanding_changes, 'site does not have any outstanding changes adter deploy');
@@ -119,6 +123,8 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
 
     isa_ok($site->project, 'VCI::VCS::Svn::Project');
     isa_ok($site->project, 'VCI::Abstract::Project');
+
+    ok(! $site->is_valid, 'this-does-not-exist.ufl.edu repository is not valid');
 
     isa_ok($site->uri, 'URI::http');
     is($site->uri, 'http://this-does-not-exist.ufl.edu/', 'URI matches');
@@ -150,6 +156,8 @@ my $REPO = VCI->connect(type => 'Svn', repo => $REPO_URI->as_string);
     is($site->uri, 'http://ufl.to/', 'URI matches');
     is($site->uri->host, 'ufl.to', 'host matches');
     is($site->uri->path, '/', 'path matches');
+
+    ok(! $site->is_valid, 'ufl.to repository is not valid');
 
     # Test loading data from the repository
     eval {

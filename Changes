@@ -4,6 +4,7 @@ Revision history for UFL-WebAdmin-SiteDeploy
         - Fail more quickly with invalidly structured sites (#121)
         - Update packages extending App::Cmd::Command to use 'execute'
           instead of deprecated 'run' method
+        - Add a validity check to UFL::WebAdmin::SiteDeploy::Site
 
 0.12  Wed May 13 16:41:06 EDT 2009
         - Handle errors in changing ownership for files that are

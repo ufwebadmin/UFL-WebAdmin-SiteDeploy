@@ -88,6 +88,29 @@ sub uri {
     return $uri;
 }
 
+=head2 is_valid
+
+Make sure that the site is valid, i.e. that it contains at least a
+test directory and a production directory.
+
+=cut
+
+sub is_valid {
+    my ($self) = @_;
+
+    my $is_valid = 1;
+
+    eval {
+        my $test_directory = $self->_test_directory;
+        my $prod_directory = $self->_prod_directory;
+    };
+    if ($@) {
+        $is_valid = 0;
+    }
+
+    return $is_valid;
+}
+
 =head2 update_history
 
 Return the L<VCI::Abstract::History> object corresponding with
