@@ -7,6 +7,7 @@ Build
 _build*
 cover_db
 inc
+t/var/
 pm_to_blib*
 *.tar.gz
 .lwpcookies
